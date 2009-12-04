@@ -1,0 +1,1 @@
+java -classpath lib\jade.jar;lib\jadeTools.jar;lib\blockworld.jar;lib\blockworld-logistics.jar jade.Boot -services jade.core.event.NotificationService;jade.core.messaging.TopicManagementService BlockWorld:Environment Sapper:mas.agent.Sapper
