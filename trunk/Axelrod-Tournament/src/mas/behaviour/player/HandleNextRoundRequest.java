@@ -15,7 +15,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 import mas.agent.Player;
 import mas.onto.AxelrodTournamentOntology;
-import mas.onto.Defect;
+import mas.onto.Cooperate;
 import mas.onto.NextRound;
 
 public class HandleNextRoundRequest extends AchieveREResponder {
@@ -28,6 +28,23 @@ public class HandleNextRoundRequest extends AchieveREResponder {
     
     @Override
     protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
+        //get the oponent's last action
+        try {
+            Action action = (Action)getPlayer().getContentManager().extractContent(request);
+            NextRound nextRound = (NextRound) action.getAction();
+            
+            if(nextRound.getOponentLastAction() != null){
+                getPlayer().getOponentHistory().add(nextRound.getOponentLastAction());
+            }
+        } catch (UngroundedException e) {
+            throw new RuntimeException(e);
+        } catch (CodecException e) {
+            throw new RuntimeException(e);
+        } catch (OntologyException e) {
+            throw new RuntimeException(e);
+        }
+        
+        //send AGREE reply
         ACLMessage agree = request.createReply();
         agree.setPerformative(ACLMessage.AGREE);
         return agree;
@@ -37,7 +54,7 @@ public class HandleNextRoundRequest extends AchieveREResponder {
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         response.setPerformative(ACLMessage.INFORM);
         try {
-            getPlayer().getContentManager().fillContent(response, new Action(getPlayer().getAID(), new Defect(getPlayer().getAID())));
+            getPlayer().getContentManager().fillContent(response, new Action(getPlayer().getAID(), new Cooperate(getPlayer().getAID())));
         } catch (CodecException e) {
             throw new RuntimeException(e);
         } catch (OntologyException e) {

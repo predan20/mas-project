@@ -10,4 +10,12 @@ public class NextRound implements Concept {
     public NextRound(PlayerAction lastAction){
         this.oponentLastAction = lastAction;
     }
+
+    public PlayerAction getOponentLastAction() {
+        return oponentLastAction;
+    }
+
+    public void setOponentLastAction(PlayerAction oponentLastAction) {
+        this.oponentLastAction = oponentLastAction;
+    }
 }
