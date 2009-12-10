@@ -1,7 +1,14 @@
 package mas.onto;
 
-import jade.content.Concept;
+import jade.core.AID;
 
-public class Defect implements Concept {
+
+public class Defect extends PlayerAction {
+
+    public Defect(){}
+    
+    public Defect(AID player) {
+        super(player);
+    }
 
 }
