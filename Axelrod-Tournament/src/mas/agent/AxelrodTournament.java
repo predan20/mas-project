@@ -9,6 +9,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,17 +18,34 @@ import java.util.Set;
 
 import mas.Constants;
 import mas.behaviour.tournament.HandleRegisterRequest;
-import mas.behaviour.tournament.NotifyForOponentLastAction;
+import mas.behaviour.tournament.InitBlockwolrd;
 import mas.behaviour.tournament.SendNextRoundRequest;
 import mas.onto.AxelrodTournamentOntology;
+import mas.onto.Cooperate;
+import mas.onto.Defect;
 import mas.onto.PlayerAction;
+import blockworld.Env;
 
 
 public class AxelrodTournament extends Agent {
+    /**
+     * Number of rounds to be played.
+     */
+    private int numberOfRounds = 6;
+    
+    /**
+     * Player to player history map.
+     */
     private Map<AID, List<PlayerAction>> playerHistories = new HashMap<AID, List<PlayerAction>>();
 
     @Override
     protected void setup() {
+        // read argument for number of rounds if provided
+        Object[] args = getArguments();
+        if(args != null && args.length > 0){
+            numberOfRounds = Integer.parseInt((String)args[0]);
+        }
+        
         //add the tournament service to the DF
         registerService();
         
@@ -35,17 +53,15 @@ public class AxelrodTournament extends Agent {
         getContentManager().registerOntology(AxelrodTournamentOntology.getInstance());
         getContentManager().registerLanguage(new SLCodec());
 
-        
+        //add one sequential behavior
         SequentialBehaviour tournamentLifecycle = new SequentialBehaviour(this);
-        
-        //add behavior for the register action
         tournamentLifecycle.addSubBehaviour(new HandleRegisterRequest(this));
+        tournamentLifecycle.addSubBehaviour(new InitBlockwolrd(this));
         
         //add behaviors for the tournament rounds
-        SequentialBehaviour nextRoundBehaviour = new SequentialBehaviour(this);
-        nextRoundBehaviour.addSubBehaviour(new NotifyForOponentLastAction(this));
-        nextRoundBehaviour.addSubBehaviour(new SendNextRoundRequest(this));
-        tournamentLifecycle.addSubBehaviour(nextRoundBehaviour);
+        for(int round = 1; round <= getNumberOfRounds(); round ++){
+            tournamentLifecycle.addSubBehaviour(new SendNextRoundRequest(this));
+        }
         
         addBehaviour(tournamentLifecycle);
     }
@@ -94,7 +110,57 @@ public class AxelrodTournament extends Agent {
     }
 
     public void handlePlayerAction(PlayerAction action) {
+        //add to history
         playerHistories.get(action.getPlayer()).add(action);
+        
+        Env env = Env.getEnv();
+        
+        //handle cooperate or defect by moving or not a bomb
+        if(action instanceof Cooperate){
+            Point pos = env.getAgent(action.getPlayer().getLocalName()).getPosition();
+            
+            Point onTheLeft = new Point(pos.x - 1, pos.y);
+            if(env.isBomb(onTheLeft) != null){
+                moveBombFromTheLeft(action.getPlayer().getLocalName());
+            }else{
+                moveBombFromTheRight(action.getPlayer().getLocalName());
+            }
+        }else if(action instanceof Defect){
+            //do not move the bomb
+        }
+        
+        //move the agent south
+        env.south(action.getPlayer().getLocalName());
+    }
+
+    private void moveBombFromTheLeft(String agentName) {
+        Env env = Env.getEnv();
+        
+        env.west(agentName);
+        env.pickup(agentName);
+        
+        env.east(agentName);
+        env.east(agentName);
+        
+        env.drop(agentName);
+        env.west(agentName);
+    }
+    
+    private void moveBombFromTheRight(String agentName) {
+        Env env = Env.getEnv();
+        
+        env.east(agentName);
+        env.pickup(agentName);
+        
+        env.west(agentName);
+        env.west(agentName);
+        
+        env.drop(agentName);
+        env.east(agentName);
+    }
+
+    public int getNumberOfRounds() {
+        return numberOfRounds;
     }
     
     
