@@ -28,5 +28,9 @@ public abstract class AbstractStrategy implements Strategy {
     protected Player getPlayer(){
         return this.player;
     }
+    
+    protected PlayerAction getOponentLastAction(){
+    	return getOponentHistory().get(getRound()-2);
+    }
 
 }

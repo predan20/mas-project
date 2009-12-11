@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 import mas.agent.strategy.AlwaysDefectStrategy;
+import mas.agent.strategy.Joss;
 import mas.agent.strategy.Strategy;
+import mas.agent.strategy.Tester;
+import mas.agent.strategy.TitForTat;
 import mas.behaviour.player.GetTournamentId;
 import mas.behaviour.player.HandleNextRoundRequest;
 import mas.behaviour.player.SendRegisterRequest;
@@ -30,6 +33,9 @@ public class Player extends Agent {
     public static final Map<String, Class<? extends Strategy>> strategies = new HashMap<String, Class<? extends Strategy>>();
     static{
         strategies.put("ALLD", AlwaysDefectStrategy.class);
+        strategies.put("TFT", TitForTat.class);
+        strategies.put("JOSS", Joss.class);
+        strategies.put("TESTER", Tester.class);
     }
 
     @Override
