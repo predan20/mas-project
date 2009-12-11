@@ -43,15 +43,16 @@ public class AxelrodTournamentOntology extends Ontology {
             ConceptSchema as = (ConceptSchema) getSchema(NEXT_ROUND);
             as.add(NEXT_ROUND_OponentLastAction, (ConceptSchema) getSchema(PLAYER_ACTION), ConceptSchema.OPTIONAL);
             
-            as = (ConceptSchema) getSchema(COOPERATE);
+            as = (ConceptSchema) getSchema(PLAYER_ACTION);
             as.add(ACTION_PLAYER, (ConceptSchema) getSchema(BasicOntology.AID));
+            
+            as = (ConceptSchema) getSchema(COOPERATE);
             as.addSuperSchema((ConceptSchema)getSchema(PLAYER_ACTION));
             
             as = (ConceptSchema) getSchema(DEFECT);
-            as.add(ACTION_PLAYER, (ConceptSchema) getSchema(BasicOntology.AID));
             as.addSuperSchema((ConceptSchema)getSchema(PLAYER_ACTION));
             
-            useConceptSlotsAsFunctions();
+            //useConceptSlotsAsFunctions();
         } catch (OntologyException oe) {
             throw new RuntimeException(oe);
         }

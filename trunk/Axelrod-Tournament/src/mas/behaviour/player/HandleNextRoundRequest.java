@@ -14,9 +14,11 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 import mas.agent.Player;
+import mas.agent.strategy.Strategy;
 import mas.onto.AxelrodTournamentOntology;
 import mas.onto.Cooperate;
 import mas.onto.NextRound;
+import mas.onto.PlayerAction;
 
 public class HandleNextRoundRequest extends AchieveREResponder {
     
@@ -54,7 +56,12 @@ public class HandleNextRoundRequest extends AchieveREResponder {
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         response.setPerformative(ACLMessage.INFORM);
         try {
-            getPlayer().getContentManager().fillContent(response, new Action(getPlayer().getAID(), new Cooperate(getPlayer().getAID())));
+            Strategy str = getPlayer().getCurrentStrategy();
+            PlayerAction nextAction = str.getNextAction();
+            
+            getPlayer().getOwnHistory().add(nextAction);
+            
+            getPlayer().getContentManager().fillContent(response, new Action(getPlayer().getAID(), nextAction));
         } catch (CodecException e) {
             throw new RuntimeException(e);
         } catch (OntologyException e) {
