@@ -30,7 +30,7 @@ import blockworld.Env;
  * JADE agent representing the Axelrod's Tournament.
  * It has single sequential behavior representing its lifecycle.
  * <ol>
- *  <li> Wait and handle REGISTER requests form players.
+ *  <li> Wait and handle REGISTER requests from players.
  *  <li> Initialize the Blockworld UI.
  *  <li> Send NEXT_ROUND requests.
  * </ol>
