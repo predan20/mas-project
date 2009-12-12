@@ -5,6 +5,12 @@ import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.schema.ConceptSchema;
 
+/**
+ * 
+ * JADE ontology used for message exchange by the Axelrod's Tournament agents.
+ * Defines concepts representing actions.
+ *
+ */
 public class AxelrodTournamentOntology extends Ontology {
     public static final String ONTOLOGY_NAME = "Axelrod's-Tournament-ontology";
     
@@ -51,8 +57,6 @@ public class AxelrodTournamentOntology extends Ontology {
             
             as = (ConceptSchema) getSchema(DEFECT);
             as.addSuperSchema((ConceptSchema)getSchema(PLAYER_ACTION));
-            
-            //useConceptSlotsAsFunctions();
         } catch (OntologyException oe) {
             throw new RuntimeException(oe);
         }

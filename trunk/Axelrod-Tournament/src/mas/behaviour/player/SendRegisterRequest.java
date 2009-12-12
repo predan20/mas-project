@@ -12,7 +12,7 @@ import mas.onto.AxelrodTournamentOntology;
 import mas.onto.Register;
 
 /**
- * Acts as a FIPA-request initiator requesting a {@link Register} action.
+ * Acts as a FIPA-request initiator requesting a {@link Register} action from the Tournament agent.
  */
 public class SendRegisterRequest extends SimpleAchieveREInitiator {
     public SendRegisterRequest(Player a) {

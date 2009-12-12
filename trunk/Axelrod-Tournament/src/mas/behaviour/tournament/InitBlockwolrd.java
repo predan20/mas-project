@@ -9,6 +9,9 @@ import java.util.Iterator;
 import mas.agent.AxelrodTournament;
 import blockworld.Env;
 
+/**
+ * One shot behavior for initializing the Blockworld GUI.
+ */
 public class InitBlockwolrd extends OneShotBehaviour {
 
     public InitBlockwolrd(AxelrodTournament a) {

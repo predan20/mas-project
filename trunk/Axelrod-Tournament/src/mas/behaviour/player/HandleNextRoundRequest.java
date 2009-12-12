@@ -16,10 +16,14 @@ import jade.proto.AchieveREResponder;
 import mas.agent.Player;
 import mas.agent.strategy.Strategy;
 import mas.onto.AxelrodTournamentOntology;
-import mas.onto.Cooperate;
 import mas.onto.NextRound;
 import mas.onto.PlayerAction;
 
+/**
+ * AchiveRE responder for handling NEXT_ROUND requests based on the FIPA-request
+ * interaction protocol.
+ * 
+ */
 public class HandleNextRoundRequest extends AchieveREResponder {
     
     public HandleNextRoundRequest(Player a) {
@@ -29,6 +33,9 @@ public class HandleNextRoundRequest extends AchieveREResponder {
     
     
     @Override
+    /**
+     * Extracts the message content, updates the oponent's history and agrees to do the requested action.
+     */
     protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
         //get the oponent's last action
         try {
@@ -53,15 +60,19 @@ public class HandleNextRoundRequest extends AchieveREResponder {
     }
 
     @Override
+    /**
+     * Gets the player's next move from its current {@link Strategy} and sends it as a result.
+     */
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         response.setPerformative(ACLMessage.INFORM);
         try {
             Strategy str = getPlayer().getCurrentStrategy();
             PlayerAction nextAction = str.getNextAction();
             
-            getPlayer().getOwnHistory().add(nextAction);
-            
-            getPlayer().getContentManager().fillContent(response, new Action(getPlayer().getAID(), nextAction));
+            if(nextAction != null){
+                getPlayer().getOwnHistory().add(nextAction);
+                getPlayer().getContentManager().fillContent(response, new Action(getPlayer().getAID(), nextAction));
+            }
         } catch (CodecException e) {
             throw new RuntimeException(e);
         } catch (OntologyException e) {
@@ -70,8 +81,12 @@ public class HandleNextRoundRequest extends AchieveREResponder {
         return response;
     }
 
-
-
+    /**
+     * The message template used to filter incoming messages to be handled by
+     * this behavior. That is FIPA_REQUEST using the
+     * {@link AxelrodTournamentOntology} and containing {@link NextRound} instance
+     * as content.
+     */
     private MessageTemplate getMessageTemplate(){
         MessageTemplate template = MessageTemplate.and(
                 MessageTemplate.and (MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST), 

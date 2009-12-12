@@ -26,10 +26,21 @@ import mas.onto.Defect;
 import mas.onto.PlayerAction;
 import blockworld.Env;
 
-
+/**
+ * JADE agent representing the Axelrod's Tournament.
+ * It has single sequential behavior representing its lifecycle.
+ * <ol>
+ *  <li> Wait and handle REGISTER requests form players.
+ *  <li> Initialize the Blockworld UI.
+ *  <li> Send NEXT_ROUND requests.
+ * </ol>
+ * 
+ * As an init param this agent accepts the number of rounds to be played.
+ */
 public class AxelrodTournament extends Agent {
     /**
      * Number of rounds to be played.
+     * Defaults to 200.
      */
     private int numberOfRounds = 6;
     
@@ -66,6 +77,10 @@ public class AxelrodTournament extends Agent {
         addBehaviour(tournamentLifecycle);
     }
     
+    /**
+     * Adds the given player to the list of participants.
+     * @param player
+     */
     public void addPlayer(AID player){
         if(!canAddPlayer()){
             throw new RuntimeException("Only 2 players allowed!");
@@ -73,14 +88,28 @@ public class AxelrodTournament extends Agent {
         playerHistories.put(player, new ArrayList<PlayerAction>());
     }
     
+    /**
+     * Checks if the number of required players was already riched.
+     * @return boolean
+     */
     public boolean canAddPlayer(){
         return playerHistories.size() < 2;
     }
     
+    /**
+     * Retrieves the given player's list of previous actions.
+     * @param player
+     * @return history
+     */
     public List<PlayerAction> getPlayerHistory(AID player){
         return playerHistories.get(player);
     }
     
+    /**
+     * Adds the give action to the history of the given player.
+     * @param player
+     * @param action
+     */
     public void addPlayerAction(AID player, PlayerAction action){
         List<PlayerAction> history = playerHistories.get(player);
         if(history == null){
@@ -90,10 +119,17 @@ public class AxelrodTournament extends Agent {
         history.add(action);
     }
     
+    /**
+     * Get the participants.
+     * @return list of players.
+     */
     public Set<AID> getPlayers(){
         return playerHistories.keySet();
     }
 
+    /**
+     * Register this agent in JADE's directory using the DFService.
+     */
     private void registerService() {
         // Register the Axelrod's Tournament in the yellow pages
         DFAgentDescription dfd = new DFAgentDescription();
@@ -109,6 +145,12 @@ public class AxelrodTournament extends Agent {
         }
     }
 
+    /**
+     * Handles new player action. This means adding it to the history and
+     * updating the Blockworld UI.
+     * 
+     * @param action
+     */
     public void handlePlayerAction(PlayerAction action) {
         //add to history
         playerHistories.get(action.getPlayer()).add(action);
@@ -159,6 +201,10 @@ public class AxelrodTournament extends Agent {
         env.east(agentName);
     }
 
+    /**
+     * Retrieves the number of rounds that are going to be played.
+     * @return int
+     */
     public int getNumberOfRounds() {
         return numberOfRounds;
     }
