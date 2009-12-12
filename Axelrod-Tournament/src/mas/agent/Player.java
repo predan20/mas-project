@@ -24,7 +24,7 @@ import mas.onto.AxelrodTournamentOntology;
 import mas.onto.PlayerAction;
 /**
  * JADE agent representing Axelrod's Tournament player.
- * It has single sequential behavior representing:
+ * It has single sequential behavior containing the following behaviors:
  * <ol>
  * <li>Query for the tournament agent's ID.
  * <li>Send REGISTER request to the tournament agent.
