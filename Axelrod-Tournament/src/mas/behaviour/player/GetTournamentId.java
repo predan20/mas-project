@@ -8,12 +8,18 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import mas.Constants;
 import mas.agent.Player;
 
+/**
+ * Simple behavior for getting the tournament ID by querying JADE's DF.
+ * Continues until the ID is retrieved (because it may happen that the Tournament Agent
+ * is not yet registered at the time this behavior is executed the first time)
+ * 
+ */
 public class GetTournamentId extends SimpleBehaviour {
-    
-    public GetTournamentId(Player player){
+
+    public GetTournamentId(Player player) {
         super(player);
     }
-    
+
     @Override
     public void action() {
         DFAgentDescription agent = new DFAgentDescription();
@@ -26,8 +32,8 @@ public class GetTournamentId extends SimpleBehaviour {
             if (results.length > 0) {
                 AID tournamentId = results[0].getName();
                 getPlayer().setTournamentAID(tournamentId);
-            }else{
-                //if the tournament agent is not registered yet - wait
+            } else {
+                // if the tournament agent is not registered yet - wait
                 block(1000);
             }
         } catch (Exception e) {
@@ -35,12 +41,15 @@ public class GetTournamentId extends SimpleBehaviour {
         }
 
     }
-    
-    private Player getPlayer(){
+
+    private Player getPlayer() {
         return (Player) myAgent;
     }
 
     @Override
+    /**
+     * Done only when the tournament ID was retrieved successfully.
+     */
     public boolean done() {
         return getPlayer().getTournamentAID() != null;
     }

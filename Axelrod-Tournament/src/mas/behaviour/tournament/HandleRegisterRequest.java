@@ -20,8 +20,8 @@ import mas.onto.Register;
 /**
  * Acts as a FIPA-request responder for {@link Register} action.
  * When receiving the request this behavior adds the sender's AID to the list of players in the tournament.
- * In case of there are already 2 players registered sends an refuse.
- *
+ * This behaviors runs until there are two registered players.
+ * In case of there are already 2 players registered sends a refuse.
  */
 public class HandleRegisterRequest extends SimpleAchieveREResponder {
     private boolean done = false;
@@ -52,6 +52,12 @@ public class HandleRegisterRequest extends SimpleAchieveREResponder {
         return (AxelrodTournament) myAgent;
     }
     
+    /**
+     * The message template used to filter incoming messages to be handled by
+     * this behavior. That is FIPA_REQUEST using the
+     * {@link AxelrodTournamentOntology} and containing {@link Register}
+     * instance as content.
+     */
     private MessageTemplate getMessageTemplate(){
         MessageTemplate template = MessageTemplate.and(
                 MessageTemplate.and (MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST), 
@@ -73,7 +79,7 @@ public class HandleRegisterRequest extends SimpleAchieveREResponder {
     }
 
     /**
-     * Matches a message with "register" action as content.
+     * Matches a message with {@link Register} action as content.
      */
     private static class RegisterActionMatchExpression implements MessageTemplate.MatchExpression{
         private ContentManager cm = null;

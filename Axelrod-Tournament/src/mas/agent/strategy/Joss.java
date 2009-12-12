@@ -4,6 +4,9 @@ import mas.agent.Player;
 import mas.onto.Defect;
 import mas.onto.PlayerAction;
 
+/**
+ * As TIT-FOR-TAT, except periodically defect
+ */
 public class Joss extends TitForTat {
 
 	public Joss(Player player) {
