@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import mas.agent.strategy.AlwaysDefectStrategy;
+import mas.agent.strategy.HistoryBased;
 import mas.agent.strategy.Joss;
 import mas.agent.strategy.Strategy;
 import mas.agent.strategy.Tester;
@@ -49,6 +50,7 @@ public class Player extends Agent {
         strategies.put("TFT", TitForTat.class);
         strategies.put("JOSS", Joss.class);
         strategies.put("TESTER", Tester.class);
+        strategies.put("HB", HistoryBased.class);
     }
 
     @Override
