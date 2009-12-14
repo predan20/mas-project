@@ -42,7 +42,7 @@ public class AxelrodTournament extends Agent {
      * Number of rounds to be played.
      * Defaults to 200.
      */
-    private int numberOfRounds = 6;
+    private int numberOfRounds = 200;
     
     /**
      * Player to player history map.
@@ -89,7 +89,7 @@ public class AxelrodTournament extends Agent {
     }
     
     /**
-     * Checks if the number of required players was already riched.
+     * Checks if the number of required players was already reached.
      * @return boolean
      */
     public boolean canAddPlayer(){
@@ -156,11 +156,10 @@ public class AxelrodTournament extends Agent {
         playerHistories.get(action.getPlayer()).add(action);
         
         Env env = Env.getEnv();
-        
+        Point pos = env.getAgent(action.getPlayer().getLocalName()).getPosition();
         //handle cooperate or defect by moving or not a bomb
         if(action instanceof Cooperate){
-            Point pos = env.getAgent(action.getPlayer().getLocalName()).getPosition();
-            
+                        
             Point onTheLeft = new Point(pos.x - 1, pos.y);
             if(env.isBomb(onTheLeft) != null){
                 moveBombFromTheLeft(action.getPlayer().getLocalName());
@@ -173,6 +172,16 @@ public class AxelrodTournament extends Agent {
         
         //move the agent south
         env.south(action.getPlayer().getLocalName());
+  /*   
+   * TO COMPLETE
+   *    
+   *    if ((pos.getY()==env.getHeight()-3)&&(pos.getX()<=env.getWidth()-7))//?sure?
+        	moveToNextColumn(action.getPlayer().getLocalName())
+    }
+    
+    private void moveToNextColumn(String playerName){
+    	for (int i=0;i<)
+    */
     }
 
     private void moveBombFromTheLeft(String agentName) {
