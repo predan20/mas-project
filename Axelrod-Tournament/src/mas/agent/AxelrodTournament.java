@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import mas.Constants;
+import mas.behaviour.tournament.EndOfTournament;
 import mas.behaviour.tournament.HandleRegisterRequest;
 import mas.behaviour.tournament.InitBlockwolrd;
 import mas.behaviour.tournament.SendNextRoundRequest;
@@ -72,6 +73,9 @@ public class AxelrodTournament extends Agent {
         //add behaviors for the tournament rounds
         for(int round = 1; round <= getNumberOfRounds(); round ++){
             tournamentLifecycle.addSubBehaviour(new SendNextRoundRequest(this));
+            
+       //added
+        tournamentLifecycle.addSubBehaviour(new EndOfTournament(this));
         }
         
         addBehaviour(tournamentLifecycle);
@@ -174,14 +178,32 @@ public class AxelrodTournament extends Agent {
         env.south(action.getPlayer().getLocalName());
   /*   
    * TO COMPLETE
-   *    
-   *    if ((pos.getY()==env.getHeight()-3)&&(pos.getX()<=env.getWidth()-7))//?sure?
-        	moveToNextColumn(action.getPlayer().getLocalName())
+   *  
+      if ((pos.getY()==env.getHeight()-3)&&(pos.getX()<=env.getWidth()-7))//?sure?
+        	moveToNextColumn(action.getPlayer().getLocalName());
     }
     
     private void moveToNextColumn(String playerName){
-    	for (int i=0;i<)
-    */
+    	Env env = Env.getEnv();
+    	Point pos=env.getAgent(playerName).getPosition();
+    	if (pos.getX()%10==5){ //left agent -> goes up first
+    		for (int i=(int) (pos.getY());i>0;i--)
+    			env.north(playerName);
+    		for (int i=0;i<10;i++)
+    			env.east(playerName);
+    		env.south(playerName);
+    	}
+    	else {
+    		env.south(playerName);
+    		for (int i=0;i<10;i++)
+    			env.east(playerName);
+    		for (int i=(int) pos.getY()+1;i>0;i--)
+    			env.north(playerName);
+    	}
+    	
+    	 * until here
+    	 */
+    
     }
 
     private void moveBombFromTheLeft(String agentName) {
