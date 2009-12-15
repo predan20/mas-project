@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import mas.agent.strategy.AlwaysDefectStrategy;
+import mas.agent.strategy.GoByMajority;
 import mas.agent.strategy.HistoryBased;
 import mas.agent.strategy.Joss;
 import mas.agent.strategy.Strategy;
@@ -51,6 +52,7 @@ public class Player extends Agent {
         strategies.put("JOSS", Joss.class);
         strategies.put("TESTER", Tester.class);
         strategies.put("HB", HistoryBased.class);
+        strategies.put("MAJORITY", GoByMajority.class);
     }
 
     @Override
