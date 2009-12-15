@@ -32,14 +32,15 @@ See mas.behaviour package.
 	
 4. Strategies
 The Player agent accepts as configuration parameter the strategy to use. Then each time the player is asked for the next round the current strategy determines the next action.
-Implemented are the Always-defect(ALLD), Tit-for-tat(TFT), Joss(JOSS), Tester(TESTER), History-Based(HB) and ??? strategies.
+Implemented are the Always-defect(ALLD), Tit-for-tat(TFT), Joss(JOSS), Tester(TESTER), History-Based(HB) and Go-by-Majority(MAJORITY) strategies.
 History based (HB) - ???
-??? - ???
+Go-by-Majority(MAJORITY) - Counts the total number of defections and cooperations by the other player. 
+						   If the defections outnumber the cooperations, go-by-majority will defect; otherwise this strategy will cooperate.
 See mas.agent.strategy
 
 5. Running and Configuration
-A match can be started by running the "run.bat" file. TIT-FOR-TAT vs. JOSS is started by default.
-To change that, edit the file and pass different strategy name (use the names in brackets from point 4.) to the Player1 or Player2 agents. 
+A match can be started by running "run.bat". TIT-FOR-TAT vs. JOSS is started by default.
+To change that, edit the file and pass different strategy name (use the names in brackets from point 4.Strategies) to the Player1 or Player2 agents. 
 You can change the number of played rounds by passing an integer to the AxerlrodTournament agent.
 
 	Partial "run.bat":

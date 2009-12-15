@@ -8,7 +8,7 @@ import mas.onto.PlayerAction;
  */
 public interface Strategy {
     /**
-     * Retrieves the next player action.
+     * Retrieves the player's next action.
      * @return {@link PlayerAction} instance.
      */
     PlayerAction getNextAction();

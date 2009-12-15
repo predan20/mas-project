@@ -6,8 +6,10 @@ import mas.onto.PlayerAction;
 
 /**
  * Strategy that:
- * 1. On first round cooperates
- * 2. On all other rounds, do what the oponent did on the previous round.
+ * <ol>
+ * <li>On first round cooperates
+ * <li>On all other rounds, do what the oponent did on the previous round.
+ * </ol>
  */
 public class TitForTat extends AbstractStrategy {
 
