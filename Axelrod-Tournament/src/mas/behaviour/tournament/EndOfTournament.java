@@ -27,34 +27,13 @@ public class EndOfTournament extends OneShotBehaviour {
 
     @Override
     public void action() {
-       /* Env env = Env.getEnv();
-        int noRounds=getTournament().getNumberOfRounds();
-        int bombsPerColumn=200;
-        int noCols=noRounds/bombsPerColumn;
-   //     if (noRounds%bombsPerColumn!=0)
-     //   	noCols++;
        
-       
-        env.setSize((noRounds/bombsPerColumn+1)*10+4, ( noRounds < bombsPerColumn ? noRounds : bombsPerColumn)+5); //4 squares horizontal margin, 4 squares between columns
-        									//max 50 bombs per column
-        env.setSenseRange(Integer.MAX_VALUE);
-        
-        for(int row = 2; row < getTournament().getNumberOfRounds() + 2; row++){
-            env.addBomb(new Point(6, row));
-            env.addBomb(new Point(7, row));
-        }
-       
-        for (int b=0; b< noRounds;b++){
-        	env.addBomb(new Point(10*(b/bombsPerColumn)+6, b%bombsPerColumn+2));
-        	System.out.println(b+"-"+(10*(b/bombsPerColumn)+6)+" "+(b%bombsPerColumn+2));
-        	env.addBomb(new Point(10*(b/bombsPerColumn)+7, b%bombsPerColumn+2));
-        }
-        
-        */
         Iterator<AID> players = getTournament().getPlayers().iterator();
         
         AID player1 = players.next();
         AID player2 = players.next();
+        
+        
         
         File f= new File("results.txt");
                 
@@ -67,20 +46,45 @@ public class EndOfTournament extends OneShotBehaviour {
         	int cd=0;
         	int dc=0;
         	int dd=0; 
+        	fw.write(player1.getLocalName()+" VS. "+player2.getLocalName()+"\n");
         	for (int i=0;i<historyP1.size();i++) {
         		if (historyP1.get(i) instanceof Cooperate) {
         			fw.write("C-");
-        			if (historyP1.get(i) instanceof Cooperate) {
+        			if (historyP2.get(i) instanceof Cooperate) {
         				fw.write("C \n");
         				cc++;        				
         			}
+        			else {
+        				fw.write("D \n");
+        				cd++;        				
+        			}
+        			fw.flush();
         		}
-        //TO COMPLETE			
+        		else {
+        			fw.write("D-");
+        			if (historyP2.get(i) instanceof Cooperate) {
+        				fw.write("C \n");
+        				dc++;        				
+        			}
+        			else {
+        				fw.write("D \n");
+        				dd++;        				
+        			}
+        			fw.flush();
+        		}
+        //TO COMPLETE	
+        		
+        		
         		
         	}
-        		
-    
-        } catch (IOException e) {
+        	fw.write("----------------\nNumber of rounds of type\n");
+        	fw.write("C-C: "+cc+"\nC-D: "+cd+"\nD-C: "+dc+"\nD-D: "+dd+"\n");
+        	fw.write("----------------\nScores\n");
+        	fw.write(player1.getLocalName()+": "+(3*cc+5*dc+dd)+"\n");
+        	fw.write(player2.getLocalName()+": "+(3*cc+5*cd+dd)+"\n");
+        	fw.close();
+        } 
+        catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
