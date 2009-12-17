@@ -124,5 +124,6 @@ public class Player extends Agent {
     public List<PlayerAction> getOwnHistory() {
         return ownHistory;
     }
+    
 
 }

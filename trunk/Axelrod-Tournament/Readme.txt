@@ -33,7 +33,8 @@ See mas.behaviour package.
 4. Strategies
 The Player agent accepts as configuration parameter the strategy to use. Then each time the player is asked for the next round the current strategy determines the next action.
 Implemented are the Always-defect(ALLD), Tit-for-tat(TFT), Joss(JOSS), Tester(TESTER), History-Based(HB) and Go-by-Majority(MAJORITY) strategies.
-History based (HB) - ???
+History based (HB) - The player tries to cooperate about as much as the opponent does. It counts the total number of defections and cooperations of the other player until now 
+and produces a percentage representing the total number of cooperations. Then, he cooperates with the probability of the previously calculated percentage.
 Go-by-Majority(MAJORITY) - Counts the total number of defections and cooperations by the other player. 
 						   If the defections outnumber the cooperations, go-by-majority will defect; otherwise this strategy will cooperate.
 See mas.agent.strategy
@@ -47,4 +48,7 @@ You can change the number of played rounds by passing an integer to the Axerlrod
 	... Tournament:mas.agent.AxelrodTournament(60) Player1:mas.agent.Player(TFT) Player2:mas.agent.Player(JOSS)
 
 6. Tournament results
-?????
+The results of a certain tournament are printed out in the file "results.txt". First, the exact game development, then the total number of each type of round (Cooperate-Cooperate, Cooperate-Defect,
+Defect-Cooperate and Cooperate-Cooperate) and then the score for each player. 
+In the TournamentsResults folder we have a file for each tournament we played (every  strategy against every strategy for 200 rounds) and a Championship file
+that summarizes the results: the scores for each tournament are shown and the total score for each strategy.
