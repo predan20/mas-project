@@ -2,7 +2,6 @@ package mas.agent.strategy;
 
 import mas.agent.Player;
 import mas.onto.Defect;
-import mas.onto.Cooperate;
 import mas.onto.PlayerAction;
 
 /**

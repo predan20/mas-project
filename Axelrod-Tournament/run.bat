@@ -1,1 +1,1 @@
-java -classpath lib\jade.jar;lib\jadeTools.jar;lib\blockworld.jar;bin\ jade.Boot Tournament:mas.agent.AxelrodTournament(60) Player1:mas.agent.Player(TFT) Player2:mas.agent.Player(JOSS)
+java -classpath lib\jade.jar;lib\jadeTools.jar;lib\blockworld.jar;lib\axelrod-tournament.jar jade.Boot Tournament:mas.agent.AxelrodTournament(20) Player1:mas.agent.Player(TFT) Player2:mas.agent.Player(JOSS)

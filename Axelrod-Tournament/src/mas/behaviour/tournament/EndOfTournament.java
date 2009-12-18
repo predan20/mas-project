@@ -3,21 +3,18 @@ package mas.behaviour.tournament;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 
-import java.awt.Point;
-import java.util.Iterator;
-import java.util.List;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import mas.agent.AxelrodTournament;
 import mas.onto.Cooperate;
-import mas.onto.Defect;
 import mas.onto.PlayerAction;
-import blockworld.Env;
 
 /**
- * One shot behavior for initializing the Blockworld GUI.
+ * One shot behavior for logging the results of the match in a results.txt file.
  */
 public class EndOfTournament extends OneShotBehaviour {
 
@@ -40,8 +37,9 @@ public class EndOfTournament extends OneShotBehaviour {
         List<PlayerAction> historyP1 = getTournament().getPlayerHistory(player1);
         List<PlayerAction> historyP2 = getTournament().getPlayerHistory(player2);
         
+        FileWriter fw = null;
         try{
-        	FileWriter fw = new FileWriter(f);
+        	fw = new FileWriter(f);
         	int cc=0;
         	int cd=0;
         	int dc=0;
@@ -82,24 +80,26 @@ public class EndOfTournament extends OneShotBehaviour {
         	fw.write("----------------\nScores\n");
         	fw.write(player1.getLocalName()+": "+(3*cc+5*dc+dd)+"\n");
         	fw.write(player2.getLocalName()+": "+(3*cc+5*cd+dd)+"\n");
-        	fw.close();
         } 
         catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(fw != null){
+			    try {
+                    fw.close();
+                } catch (IOException e1) {
+                    throw new RuntimeException(e1);
+                }
+			}
+            throw new RuntimeException(e);
 		}
         finally{
-        	
+            if(fw != null){
+                try {
+                    fw.close();
+                } catch (IOException e1) {
+                    throw new RuntimeException(e1);
+                }
+            }
         }
-  
-        
-        /*
-        env.addAgent(player1.getLocalName());
-        env.enter(player1.getLocalName(), 5.0, 2.0, "blue");
-        
-        env.addAgent(player2.getLocalName());
-        env.enter(player2.getLocalName(), 8.0, 2.0, "red");
-*/
     }
     
     private AxelrodTournament getTournament(){

@@ -10,9 +10,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 import java.awt.Point;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +34,7 @@ import blockworld.Env;
  *  <li> Wait and handle REGISTER requests from players.
  *  <li> Initialize the Blockworld UI.
  *  <li> Send NEXT_ROUND requests.
+ *  <li> Log the results of the match in a file.
  * </ol>
  * 
  * As an init param this agent accepts the number of rounds to be played.

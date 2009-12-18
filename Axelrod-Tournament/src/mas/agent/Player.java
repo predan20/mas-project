@@ -19,7 +19,6 @@ import mas.agent.strategy.Joss;
 import mas.agent.strategy.Strategy;
 import mas.agent.strategy.Tester;
 import mas.agent.strategy.TitForTat;
-import mas.agent.strategy.AlwaysCooperateStrategy;
 import mas.behaviour.player.GetTournamentId;
 import mas.behaviour.player.HandleNextRoundRequest;
 import mas.behaviour.player.SendRegisterRequest;
@@ -54,7 +53,6 @@ public class Player extends Agent {
         strategies.put("TESTER", Tester.class);
         strategies.put("HB", HistoryBased.class);
         strategies.put("MAJORITY", GoByMajority.class);
-        strategies.put("ALLC", AlwaysCooperateStrategy.class); //dummy class for testing
     }
 
     @Override
