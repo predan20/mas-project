@@ -6,7 +6,7 @@ The archive contains:
 3. "doc" folder with generated javadoc
 4. "run.bat" - starts a match between 2 players ( TIT-FOR-TAT vs. JOSS by default but can be configured, see bellow)
 5. Eclipse project files that can be imported by creating a new project in Eclipse and selecting the "Create project from existing source"
-
+6. "tournamentsResults" folder with the results of a simulation of a Championship
 Solution Overview:
     
 1. Agents	
@@ -34,7 +34,7 @@ See mas.behaviour package.
 The Player agent accepts as configuration parameter the strategy to use. Then each time the player is asked for the next round the current strategy determines the next action.
 Implemented are the Always-defect(ALLD), Tit-for-tat(TFT), Joss(JOSS), Tester(TESTER), History-Based(HB) and Go-by-Majority(MAJORITY) strategies.
 History based (HB) - The player tries to cooperate about as much as the opponent does. It counts the total number of defections and cooperations of the other player until now 
-and produces a percentage representing the total number of cooperations. Then, he cooperates with the probability of the previously calculated percentage.
+					 and produces a percentage representing the total number of cooperations. Then, he cooperates with the probability of the previously calculated percentage.
 Go-by-Majority(MAJORITY) - Counts the total number of defections and cooperations by the other player. 
 						   If the defections outnumber the cooperations, go-by-majority will defect; otherwise this strategy will cooperate.
 See mas.agent.strategy
@@ -42,10 +42,11 @@ See mas.agent.strategy
 5. Running and Configuration
 A match can be started by running "run.bat". TIT-FOR-TAT vs. JOSS is started by default.
 To change that, edit the file and pass different strategy name (use the names in brackets from point 4.Strategies) to the Player1 or Player2 agents. 
-You can change the number of played rounds by passing an integer to the AxerlrodTournament agent.
+You can change the number of played rounds by passing an integer to the AxelrodTournament agent.
+You can also add the maximum number of bombs placed per column by passing it as a second parameter to the AxelrodTournament agent.
 
 	Partial "run.bat":
-	... Tournament:mas.agent.AxelrodTournament(60) Player1:mas.agent.Player(TFT) Player2:mas.agent.Player(JOSS)
+	... Tournament:mas.agent.AxelrodTournament(60 20) Player1:mas.agent.Player(TFT) Player2:mas.agent.Player(JOSS)
 
 6. Tournament results
 The results of a certain tournament are printed out in the file "results.txt". First, the exact game development, then the total number of each type of round (Cooperate-Cooperate, Cooperate-Defect,

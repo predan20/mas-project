@@ -10,6 +10,9 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +47,7 @@ public class AxelrodTournament extends Agent {
      * Defaults to 200.
      */
     private int numberOfRounds = 200;
+    private int bombsPerColumn=40;
     
     /**
      * Player to player history map.
@@ -56,6 +60,8 @@ public class AxelrodTournament extends Agent {
         Object[] args = getArguments();
         if(args != null && args.length > 0){
             numberOfRounds = Integer.parseInt((String)args[0]);
+            if (args.length > 1)
+            	bombsPerColumn = Integer.parseInt((String)args[1]);
         }
         
         //add the tournament service to the DF
@@ -178,30 +184,59 @@ public class AxelrodTournament extends Agent {
         env.south(action.getPlayer().getLocalName());
   /*   
    * TO COMPLETE
-   *  
-      if ((pos.getY()==env.getHeight()-3)&&(pos.getX()<=env.getWidth()-7))//?sure?
+   */ 
+      if ((pos.getY()==env.getHeight()-4)&&(pos.getX()<=env.getWidth()-10))//?sure?
         	moveToNextColumn(action.getPlayer().getLocalName());
     }
     
-    private void moveToNextColumn(String playerName){
+    private void moveToNextColumn(String playerName) {
+    	File f= new File("trace"+playerName+".txt");
     	Env env = Env.getEnv();
+    	try{
+        	FileWriter fw = new FileWriter(f);
     	Point pos=env.getAgent(playerName).getPosition();
+    	fw.write("Initial"+pos.getX()+" "+pos.getY()+"\n");
     	if (pos.getX()%10==5){ //left agent -> goes up first
-    		for (int i=(int) (pos.getY());i>0;i--)
+    		for (int i=(int) (pos.getY());i>1;i--){
     			env.north(playerName);
-    		for (int i=0;i<10;i++)
+    			fw.write("N");
+    			fw.flush();
+    		}
+    		for (int i=0;i<10;i++){
     			env.east(playerName);
+    			fw.write("E");
+    			fw.flush();
+    		}
     		env.south(playerName);
+    		fw.write("S");
+			fw.flush();
+			
     	}
     	else {
     		env.south(playerName);
-    		for (int i=0;i<10;i++)
+    		fw.write("S");
+			fw.flush();
+    		for (int i=0;i<10;i++){
     			env.east(playerName);
-    		for (int i=(int) pos.getY()+1;i>0;i--)
+    			fw.write("E");
+    			fw.flush();
+    		}
+    		for (int i=(int) pos.getY();i>1;i--){
     			env.north(playerName);
+    			fw.write("N");
+    			fw.flush();
+    		}
     	}
-    	
-    	 * until here
+    	pos=env.getAgent(playerName).getPosition();
+    	fw.write("\nFinal"+pos.getX()+" "+pos.getY()+"\n");
+    	fw.flush();
+    	fw.close();
+    	}
+    	catch(IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	/* until here
     	 */
     
     }
@@ -240,6 +275,9 @@ public class AxelrodTournament extends Agent {
         return numberOfRounds;
     }
     
+    public int getBombsPerColumn(){
+    	return bombsPerColumn;
+    }
     
 
 }

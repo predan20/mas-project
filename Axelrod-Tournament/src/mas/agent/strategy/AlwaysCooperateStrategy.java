@@ -9,15 +9,15 @@ import mas.onto.PlayerAction;
  * Strategy that always returns a {@link Defect} instance.
  *
  */
-public class AlwaysDefectStrategy extends AbstractStrategy {
+public class AlwaysCooperateStrategy extends AbstractStrategy {
 
-    public AlwaysDefectStrategy(Player player) {
+    public AlwaysCooperateStrategy(Player player) {
         super(player);
     }
 
     @Override
     public PlayerAction getNextAction() {
-        return new Defect(getPlayer().getAID());
+        return new Cooperate(getPlayer().getAID());
     }
 
 }
