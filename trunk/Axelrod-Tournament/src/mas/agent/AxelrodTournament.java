@@ -176,68 +176,49 @@ public class AxelrodTournament extends Agent {
             }else{
                 moveBombFromTheRight(action.getPlayer().getLocalName());
             }
-        }else if(action instanceof Defect){
+        }
+        else if(action instanceof Defect){
             //do not move the bomb
         }
         
         //move the agent south
         env.south(action.getPlayer().getLocalName());
-  /*   
-   * TO COMPLETE
-   */ 
-      if ((pos.getY()==env.getHeight()-4)&&(pos.getX()<=env.getWidth()-10))//?sure?
+
+        //move the agent to the next column
+        if ((pos.getY()==env.getHeight()-4)&&(pos.getX()<=env.getWidth()-10))//?sure?
         	moveToNextColumn(action.getPlayer().getLocalName());
     }
     
     private void moveToNextColumn(String playerName) {
-    	File f= new File("trace"+playerName+".txt");
+
     	Env env = Env.getEnv();
-    	try{
-        	FileWriter fw = new FileWriter(f);
+
     	Point pos=env.getAgent(playerName).getPosition();
-    	fw.write("Initial"+pos.getX()+" "+pos.getY()+"\n");
-    	if (pos.getX()%10==5){ //left agent -> goes up first
-    		for (int i=(int) (pos.getY());i>1;i--){
+
+    	//left agent goes up first to avoid intersection with the right one
+    	if (pos.getX()%10==5){ 
+    		for (int i=(int) (pos.getY());i>1;i--)
     			env.north(playerName);
-    			fw.write("N");
-    			fw.flush();
-    		}
-    		for (int i=0;i<10;i++){
+
+    		for (int i=0;i<10;i++)
     			env.east(playerName);
-    			fw.write("E");
-    			fw.flush();
-    		}
+    	
     		env.south(playerName);
-    		fw.write("S");
-			fw.flush();
+
 			
     	}
     	else {
     		env.south(playerName);
-    		fw.write("S");
-			fw.flush();
-    		for (int i=0;i<10;i++){
+
+    		for (int i=0;i<10;i++)
     			env.east(playerName);
-    			fw.write("E");
-    			fw.flush();
-    		}
-    		for (int i=(int) pos.getY();i>1;i--){
+
+    		for (int i=(int) pos.getY();i>1;i--)
     			env.north(playerName);
-    			fw.write("N");
-    			fw.flush();
-    		}
+
     	}
-    	pos=env.getAgent(playerName).getPosition();
-    	fw.write("\nFinal"+pos.getX()+" "+pos.getY()+"\n");
-    	fw.flush();
-    	fw.close();
-    	}
-    	catch(IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	/* until here
-    	 */
+
+
     
     }
 
