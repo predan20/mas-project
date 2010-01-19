@@ -1,0 +1,1 @@
+java -classpath lib\jade.jar;lib\jadeTools.jar;lib\blockworld.jar;bin\ jade.Boot -gui -services jade.core.event.NotificationService;jade.core.messaging.TopicManagementService Auctioneer:mas.agent.Auctioneer Bidder1:mas.agent.Bidder Bidder2:mas.agent.Bidder
