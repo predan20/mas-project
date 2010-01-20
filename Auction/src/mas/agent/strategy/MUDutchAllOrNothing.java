@@ -7,9 +7,9 @@ import mas.onto.Bid;
  * Interface representing given strategy that a player will follow during play
  * in the Axelrod's Tournament.
  */
-public class MGDutchAllOrNothing extends AbstractStrategy {
+public class MUDutchAllOrNothing extends AbstractStrategy {
     
-	public MGDutchAllOrNothing(Bidder player) {
+	public MUDutchAllOrNothing(Bidder player) {
 		super(player);
 		// TODO Auto-generated constructor stub
 	}
@@ -32,14 +32,8 @@ public class MGDutchAllOrNothing extends AbstractStrategy {
     	
     	double riskFactor=0.95; //for which the player would go lower even if he affords the items
     	
-    // from here modified	
-    	//he bids one item at a time
-    	//he pays higher for the first item to get rid of some AllOrNothing bidders
-    	int maxItemsToGet=Math.min(itemsWanted, itemsAvailable);
-    	if (itemsAvailable>0 && 
-    			(budget/itemsWanted*maxItemsToGet)>=lastPrice*maxItemsToGet && 
-    			Math.random()<riskFactor)
-    		return new Bid(lastPrice, this.getBidder().getAID());
+    	if (itemsAvailable>=itemsWanted && budget>=lastPrice*itemsWanted && Math.random()<riskFactor)
+    		return new Bid(lastPrice*itemsWanted, this.getBidder().getAID());
     	
     	return null;
     }
