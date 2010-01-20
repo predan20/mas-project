@@ -17,6 +17,8 @@ public class AuctionDescription implements Concept {
     public static final String JAPANESE_AUCTION = "japanese";
 
     private String auctionType;
+
+	private int minStep;
     
     private Set<Good> goods = null;
 
@@ -26,6 +28,12 @@ public class AuctionDescription implements Concept {
         this.auctionType = auctionType;
         this.goods = goods;
     }
+    
+    public AuctionDescription(String auctionType, int minStep, Set<Good> goods) {
+		this.auctionType = auctionType;
+		this.minStep = minStep;
+		this.goods = goods;
+	}
     
     public String getAuctionType() {
         return auctionType;
@@ -42,4 +50,12 @@ public class AuctionDescription implements Concept {
     public void setGoods(Set<Good> goods) {
         this.goods = goods;
     }
+
+	public int getMinStep() {
+		return minStep;
+	}
+
+	public void setMinStep(int minStep) {
+		this.minStep = minStep;
+	}
 }

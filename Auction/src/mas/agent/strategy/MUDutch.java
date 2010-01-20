@@ -2,6 +2,7 @@ package mas.agent.strategy;
 
 import mas.agent.Bidder;
 import mas.onto.Bid;
+import mas.onto.Good;
 
 /**
  * Interface representing given strategy that a player will follow during play
@@ -22,10 +23,9 @@ public class MUDutch extends AbstractStrategy {
      */
     public Bid getNextBid() {
 		
-    //  retrieve itemsAvailable number of goods from the first type from the auction
-    	int itemsAvailable=3;
-    //  retrieve lastPrice
-    	int lastPrice=700;
+    	Good theGood=getBidder().getAuction().getGoods().iterator().next();
+    	int itemsAvailable = theGood.getAvailableCount();
+    	int lastPrice=getBidder().getLastPrize(theGood);
     	int budget=this.getBidder().getBidderState().getBudget();
     	int itemsWanted=this.getBidder().getBidderState().getItemsWanted();
     	

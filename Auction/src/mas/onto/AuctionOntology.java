@@ -28,11 +28,6 @@ public class AuctionOntology extends BeanOntology {
 
         try {
             add("mas.onto");
-//            add(Prize.class);
-//            add(Bid.class);
-//            add(AuctionDescription.class);
-//            add(Good.class);
-//            add(Book.class);
         } catch (OntologyException oe) {
             throw new RuntimeException(oe);
         }

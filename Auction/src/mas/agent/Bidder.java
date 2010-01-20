@@ -1,5 +1,8 @@
 package mas.agent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.core.ServiceException;
@@ -8,8 +11,10 @@ import mas.AgentUtil;
 import mas.Constants;
 import mas.agent.strategy.Strategy;
 import mas.behaviour.bidder.HandleAuctionRequest;
+import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
 import mas.onto.BidderConfig;
+import mas.onto.Good;
 /**
  * JADE agent representing a bidder in an auction.
  * It has single sequential behavior containing the following behaviors:
@@ -22,8 +27,11 @@ import mas.onto.BidderConfig;
 public class Bidder extends Agent {
 	
 	private BidderConfig bidderState;
+	private AuctionDescription auction;
+    private Map<Good, Integer> lastPrizes = new HashMap<Good, Integer>();
     
-    @Override
+
+	@Override
     protected void setup() {
         //init configuration
         loadConfiguration();
@@ -67,4 +75,20 @@ public class Bidder extends Agent {
     public BidderConfig getBidderState(){
         return bidderState;
     }
+    
+    public AuctionDescription getAuction() {
+		return auction;
+	}
+
+	public void setAuction(AuctionDescription auction) {
+		this.auction = auction;
+	}
+	
+	public int getLastPrize(Good good){
+		return lastPrizes.get(good);
+	}
+	
+	public void setLastPrize(Good good, int value){
+		lastPrizes.put(good, value);
+	}
 }

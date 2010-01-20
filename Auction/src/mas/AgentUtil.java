@@ -22,7 +22,7 @@ import mas.agent.Auctioneer;
 import mas.agent.Bidder;
 import mas.agent.strategy.AllInStrategy;
 import mas.agent.strategy.Strategy;
-import mas.behaviour.auctioneer.SingleUnitEnglishAuction;
+import mas.behaviour.auctioneer.english.SingleUnitEnglishAuction;
 import mas.onto.AuctionDescription;
 import mas.onto.BidderConfig;
 import mas.onto.Good;
@@ -67,6 +67,7 @@ public class AgentUtil {
         }
         
         String auctionType = null;
+        int minStep = 1;
         String[] goodTypes = null;
         String[] goodCounts = null;
         String[] initialPrizes = null;
@@ -85,7 +86,10 @@ public class AgentUtil {
                 initialPrizes = props.getProperty(k).split(",");
             }else if(Constants.CONFIG_AUCTION_GOOD_RESERVATION_PRIZE.equals(k)){
                 reservationPrizes = props.getProperty(k).split(",");
+            }else if(Constants.CONFIG_AUCTION_STEP.equals(k)){
+                minStep = Integer.parseInt(props.getProperty(k));
             }
+            
         }
         
         if(goodTypes.length != goodCounts.length){
@@ -123,7 +127,7 @@ public class AgentUtil {
             }
         }
         
-        return new AuctionDescription(auctionType, goods);
+        return new AuctionDescription(auctionType, minStep, goods);
     }
 
     /**
@@ -150,9 +154,11 @@ public class AgentUtil {
     public static Behaviour createBidderBehaviour(AuctionDescription desc, Bidder agent){
         if(AuctionDescription.ENGLISH_AUCTION.equals(desc.getAuctionType())){
             if(desc.getGoods().size() == 1 && desc.getGoods().iterator().next().getAvailableCount() == 1){
-                return new mas.behaviour.bidder.SingleUnitEnglishAuction(agent, desc);
+                return new mas.behaviour.bidder.english.SingleUnitEnglishAuction(agent, desc);
             }
         }
+        else if (AuctionDescription.DUTCH_AUCTION.equals(desc.getAuctionType()))
+        	{}
         return null; 
     }
     

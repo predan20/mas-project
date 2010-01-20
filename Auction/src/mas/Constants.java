@@ -17,6 +17,7 @@ public class Constants {
 	public static final String AUCTION_TOPIC = "AUCTION";
 	
 	public static final String CONFIG_AUCTION_TYPE = "auction.type";
+	public static final String CONFIG_AUCTION_STEP = "auction.minimum_step";
 	public static final String CONFIG_AUCTION_GOOD_TYPES = "acution.good.type";
 	public static final String CONFIG_AUCTION_GOOD_COUNTS = "auction.good.count";
 	public static final String CONFIG_AUCTION_GOOD_INITIAL_PRIZE = "auction.good.initial_prize";

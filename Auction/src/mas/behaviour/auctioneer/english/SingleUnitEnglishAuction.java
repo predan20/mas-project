@@ -1,8 +1,9 @@
-package mas.behaviour.auctioneer;
+package mas.behaviour.auctioneer.english;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import mas.agent.Auctioneer;
+import mas.behaviour.auctioneer.AnnouncePrize;
 import mas.onto.AuctionDescription;
 
 public class SingleUnitEnglishAuction extends OneShotBehaviour {

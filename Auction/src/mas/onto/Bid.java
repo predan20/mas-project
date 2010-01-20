@@ -5,6 +5,7 @@ import jade.core.AID;
 
 public class Bid implements Concept {
     private int ammount;
+    
     private AID agent;
     
     public Bid(){}
@@ -12,6 +13,8 @@ public class Bid implements Concept {
     public Bid(int ammount, AID agent){
         this.ammount = ammount;
         this.agent = agent;
+        
+        
     }
 
     public int getAmmount() {
