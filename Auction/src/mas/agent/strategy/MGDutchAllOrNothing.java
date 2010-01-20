@@ -23,14 +23,23 @@ public class MGDutchAllOrNothing extends AbstractStrategy {
     public Bid getNextBid() {
 		
     //  retrieve itemsAvailable number of goods from the first type from the auction
+    	int itemsAvailable=3;
     //  retrieve lastPrice
-    	int budget=this.getBidder().getBudget();
-    //	int itemsWanted=player.getNumberOfGoods(typeofGood);
+    	int lastPrice=700;
+    	int budget=this.getBidder().getBidderState().getBudget();
+    	int itemsWanted=this.getBidder().getBidderState().getItemsWanted();
     	
     	
     	double riskFactor=0.95; //for which the player would go lower even if he affords the items
-    	//if (itemsAvailable>=itemsWanted && budget>=lastPrice*itemsWanted && Math.random()<riskFactor)
-    		//return new Bid(lastPrice*itemsWanted, player.getAID());
+    	
+    // from here modified	
+    	//he bids one item at a time
+    	//he pays higher for the first item to get rid of some AllOrNothing bidders
+    	int maxItemsToGet=Math.min(itemsWanted, itemsAvailable);
+    	if (itemsAvailable>0 && 
+    			(budget/itemsWanted*maxItemsToGet)>=lastPrice*maxItemsToGet && 
+    			Math.random()<riskFactor)
+    		return new Bid(lastPrice, this.getBidder().getAID());
     	
     	return null;
     }
