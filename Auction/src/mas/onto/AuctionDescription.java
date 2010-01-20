@@ -1,40 +1,42 @@
 package mas.onto;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import jade.content.Concept;
 
+import java.util.Set;
+
 /**
- * Concept representing the auction to be held.
+ * Concept representing the state of an auction.
  * 
  */
 public class AuctionDescription implements Concept {
 
+    /**
+     * Enumeration of possible auction types.
+     */
     public static enum AuctionType {
         ENGLISH, DUTCH, JAPANESE;
     }
 
     private AuctionType auctionType;
+    
+    private Set<Good> goods = null;
 
-    public AuctionDescription(AuctionType auctionType, Map<Class<? extends Good>, Integer> goods) {
+    public AuctionDescription(){}
+    
+    public AuctionDescription(AuctionType auctionType, Set<Good> goods) {
         this.auctionType = auctionType;
         this.goods = goods;
     }
-
-    private Map<Class<? extends Good>, Integer> goods = new HashMap<Class<? extends Good>, Integer>();
-
+    
     public AuctionType getAuctionType() {
         return auctionType;
     }
 
-    public Set<Class<? extends Good>> getGoodTypes() {
-        return goods.keySet();
+    public Set<Good> getGoods() {
+        return goods;
     }
 
-    public int getNumberOfGoods(Class<? extends Good> goodType) {
-        return goods.get(goodType);
+    public void setGoods(Set<Good> goods) {
+        this.goods = goods;
     }
-
 }

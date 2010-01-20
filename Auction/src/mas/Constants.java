@@ -21,4 +21,10 @@ public class Constants {
 	public static final String CONFIG_AUCTION_GOOD_COUNTS = "auction.good.count";
 	public static final String CONFIG_AUCTION_GOOD_INITIAL_PRIZE = "auction.good.initial_prize";
 	public static final String CONFIG_AUCTION_GOOD_RESERVATION_PRIZE = "auction.good.reservation_prize";
+	
+	
+	public static final String CONFIG_BIDDER_PREFIX = "bidder.";
+	public static final String CONFIG_BIDDER_BUDGET = "budget";
+	public static final String CONFIG_BIDDER_STRATEGY = "strategy";
+	
 }

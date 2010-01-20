@@ -5,16 +5,16 @@ import mas.agent.Bidder;
 /**
  * Abstract implementation of the {@link Strategy} interface. All other
  * implementors are recommended to extend this class. The class provides access
- * to the bidder using this strategy.
+ * to the bidder using the strategy.
  */
 public abstract class AbstractStrategy implements Strategy {
-    private Bidder player;
+    private Bidder bidder;
 
     public AbstractStrategy(Bidder player) {
-        this.player = player;
+        this.bidder = player;
     }
 
-    protected Bidder getPlayer() {
-        return this.player;
+    protected Bidder getBidder() {
+        return this.bidder;
     }
 }

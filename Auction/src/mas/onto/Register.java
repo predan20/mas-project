@@ -19,4 +19,8 @@ public class Register implements Concept {
 	public AuctionDescription getAuctionDesciption() {
 		return auctionDesciption;
 	}
+
+    public void setAuctionDesciption(AuctionDescription auctionDesciption) {
+        this.auctionDesciption = auctionDesciption;
+    }
 }

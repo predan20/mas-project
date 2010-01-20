@@ -1,15 +1,15 @@
-package mas.behaviour.auctioneer;
+package mas.behaviour.bidder;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
-import mas.agent.Auctioneer;
+import mas.agent.Bidder;
 import mas.onto.AuctionDescription;
 
 public class SingleUnitEnglishAuction extends OneShotBehaviour {
     private final AuctionDescription auctionDescription;
     
     
-    public SingleUnitEnglishAuction(Auctioneer agent, AuctionDescription desc){
+    public SingleUnitEnglishAuction(Bidder agent, AuctionDescription desc){
         super(agent);
         auctionDescription = desc;
     }
@@ -17,14 +17,15 @@ public class SingleUnitEnglishAuction extends OneShotBehaviour {
     public void action() {
         SequentialBehaviour b = new SequentialBehaviour();
         
-        b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize()));
+        b.addSubBehaviour(new ReceiveInitialPrize(getBidder()));
+        b.addSubBehaviour(new Bid(getBidder()));
         
         myAgent.addBehaviour(b);
 
     }
     
-    public Auctioneer getAuctioneer(){
-        return (Auctioneer) myAgent;
+    public Bidder getBidder(){
+        return (Bidder) myAgent;
     }
 
 }

@@ -10,13 +10,12 @@ import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.messaging.TopicManagementHelper;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import mas.Constants;
 import mas.agent.Bidder;
 import mas.onto.AuctionOntology;
-import mas.onto.InitialPrize;
+import mas.onto.Prize;
 import mas.onto.Register;
 
 public class ReceiveInitialPrize extends CyclicBehaviour {
@@ -34,8 +33,8 @@ public class ReceiveInitialPrize extends CyclicBehaviour {
             if(el instanceof Action){
                 Action action = (Action)el;
                 
-                if(action.getAction() instanceof InitialPrize){
-                    InitialPrize prize = (InitialPrize)action.getAction();
+                if(action.getAction() instanceof Prize){
+                    Prize prize = (Prize)action.getAction();
                     int initialPrize = prize.getAmmount();
                 }
             }
@@ -48,18 +47,16 @@ public class ReceiveInitialPrize extends CyclicBehaviour {
         }
 
     }
-    
+
     /**
      * The message template used to filter incoming messages to be handled by
-     * this behavior. That is FIPA_REQUEST using the
-     * {@link AuctionOntology} and containing {@link Register}
-     * instance as content.
+     * this behavior. That is INFORM message using the {@link AuctionOntology}
+     * and containing {@link Prize} instance as content.
      */
-    private MessageTemplate getMessageTemplate(){
+    private MessageTemplate getMessageTemplate() {
         TopicManagementHelper topicHelper;
         try {
-            topicHelper = (TopicManagementHelper) myAgent
-                    .getHelper(TopicManagementHelper.SERVICE_NAME);
+            topicHelper = (TopicManagementHelper) myAgent.getHelper(TopicManagementHelper.SERVICE_NAME);
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
@@ -67,20 +64,20 @@ public class ReceiveInitialPrize extends CyclicBehaviour {
         
         
         MessageTemplate template = MessageTemplate.and(
-                MessageTemplate.and (MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST), 
+                MessageTemplate.and (MessageTemplate.MatchPerformative(ACLMessage.INFORM), 
                         MessageTemplate.MatchTopic(jadeTopic)), 
                 MessageTemplate.and (MessageTemplate.MatchOntology(AuctionOntology.ONTOLOGY_NAME), 
-                        new MessageTemplate(new RegisterActionMatchExpression(myAgent.getContentManager()))));
+                        new MessageTemplate(new PrizeMatchExpression(myAgent.getContentManager()))));
         return template;
     }
     
     /**
      * Matches a message with {@link Register} action as content.
      */
-    private static class RegisterActionMatchExpression implements MessageTemplate.MatchExpression{
+    private static class PrizeMatchExpression implements MessageTemplate.MatchExpression{
         private ContentManager cm = null;
         
-        public RegisterActionMatchExpression(ContentManager cm){
+        public PrizeMatchExpression(ContentManager cm){
             this.cm = cm;
         }
         
@@ -89,7 +86,7 @@ public class ReceiveInitialPrize extends CyclicBehaviour {
         public boolean match(ACLMessage msg) {
             try {
                 ContentElement el = cm.extractContent(msg);
-                if(el instanceof Action && ((Action)el).getAction() instanceof InitialPrize){
+                if(el instanceof Action && ((Action)el).getAction() instanceof Prize){
                     return true;
                 }
             } catch (UngroundedException e) {

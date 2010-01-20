@@ -2,12 +2,12 @@ package mas.onto;
 
 import jade.content.Concept;
 
-public class InitialPrize implements Concept {
+public class Prize implements Concept {
     private int ammount;
     
-    public InitialPrize(){}
+    public Prize(){}
     
-    public InitialPrize(int ammount){
+    public Prize(int ammount){
         this.ammount = ammount;
     }
 

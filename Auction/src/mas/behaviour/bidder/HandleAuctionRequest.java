@@ -16,8 +16,10 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
+import mas.AgentUtil;
 import mas.Constants;
 import mas.agent.Bidder;
+import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
 import mas.onto.Register;
 
@@ -25,7 +27,6 @@ import mas.onto.Register;
  * Acts as a FIPA-request responder for auctioneer's {@link Register} request.
  */
 public class HandleAuctionRequest extends SimpleAchieveREResponder {
-    private boolean done = false;
     
     public HandleAuctionRequest(Bidder a) {
         super(a, null);
@@ -38,6 +39,10 @@ public class HandleAuctionRequest extends SimpleAchieveREResponder {
         return agree;
     }
 
+    /**
+     * Extracts the auction description from the message and adds appropriate
+     * for the auction type behavior to the agent.
+     */
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response)
             throws FailureException {
         try {
@@ -47,7 +52,10 @@ public class HandleAuctionRequest extends SimpleAchieveREResponder {
                 
                 if(action.getAction() instanceof Register){
                     Register reg = (Register) action.getAction();
-                    reg.getAuctionDesciption();
+                    AuctionDescription desc = reg.getAuctionDesciption();
+                    if(desc != null){
+                        myAgent.addBehaviour(AgentUtil.createBidderBehaviour(desc, getBidder()));
+                    }
                 }
             }
         } catch (UngroundedException e) {
