@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/iiop.jar"/>
 	<classpathentry kind="lib" path="lib/jade.jar" sourcepath="/home/apankov/Dev/JADE-all-3.7/JADE-src-3.7.zip"/>
 	<classpathentry kind="lib" path="lib/jadeTools.jar"/>
+	<classpathentry kind="lib" path="lib/jadeMisc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
