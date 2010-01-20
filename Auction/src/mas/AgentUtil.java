@@ -26,7 +26,6 @@ import mas.behaviour.auctioneer.SingleUnitEnglishAuction;
 import mas.onto.AuctionDescription;
 import mas.onto.BidderConfig;
 import mas.onto.Good;
-import mas.onto.AuctionDescription.AuctionType;
 
 public class AgentUtil {
     
@@ -67,7 +66,7 @@ public class AgentUtil {
             throw new RuntimeException(e);
         }
         
-        AuctionType aType = null;
+        String auctionType = null;
         String[] goodTypes = null;
         String[] goodCounts = null;
         String[] initialPrizes = null;
@@ -77,12 +76,7 @@ public class AgentUtil {
         for (Object key : props.keySet()){
             String k = (String)key;
             if(Constants.CONFIG_AUCTION_TYPE.equals(k)){
-                String auctionType = props.getProperty(k);
-                if("english".equals(auctionType)){
-                    aType = AuctionType.ENGLISH;
-                }else if("dutch".equals(auctionType)){
-                    aType = AuctionType.DUTCH;
-                }
+                auctionType = props.getProperty(k);
             }else if(Constants.CONFIG_AUCTION_GOOD_TYPES.equals(k)){
                 goodTypes = props.getProperty(k).split(",");
             }else if(Constants.CONFIG_AUCTION_GOOD_COUNTS.equals(k)){
@@ -129,7 +123,7 @@ public class AgentUtil {
             }
         }
         
-        return new AuctionDescription(aType, goods);
+        return new AuctionDescription(auctionType, goods);
     }
 
     /**
@@ -139,7 +133,7 @@ public class AgentUtil {
      * @return Behaviour instance
      */
     public static Behaviour createAuctioneerBehaviour(AuctionDescription desc, Auctioneer agent){
-        if(AuctionType.ENGLISH.equals(desc.getAuctionType())){
+        if(AuctionDescription.ENGLISH_AUCTION.equals(desc.getAuctionType())){
             if(desc.getGoods().size() == 1 && desc.getGoods().iterator().next().getAvailableCount() == 1){
                 return new SingleUnitEnglishAuction(agent, desc);
             }
@@ -154,7 +148,7 @@ public class AgentUtil {
      * @return Behaviour instance
      */
     public static Behaviour createBidderBehaviour(AuctionDescription desc, Bidder agent){
-        if(AuctionType.ENGLISH.equals(desc.getAuctionType())){
+        if(AuctionDescription.ENGLISH_AUCTION.equals(desc.getAuctionType())){
             if(desc.getGoods().size() == 1 && desc.getGoods().iterator().next().getAvailableCount() == 1){
                 return new mas.behaviour.bidder.SingleUnitEnglishAuction(agent, desc);
             }
