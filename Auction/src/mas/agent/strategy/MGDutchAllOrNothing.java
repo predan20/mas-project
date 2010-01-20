@@ -24,7 +24,7 @@ public class MGDutchAllOrNothing extends AbstractStrategy {
 		
     //  retrieve itemsAvailable number of goods from the first type from the auction
     //  retrieve lastPrice
-    	int budget=this.player.getBudget();
+    	int budget=this.getBidder().getBudget();
     //	int itemsWanted=player.getNumberOfGoods(typeofGood);
     	
     	
