@@ -3,25 +3,13 @@ package mas.agent;
 import jade.content.lang.sl.SLCodec;
 import jade.core.Agent;
 import jade.core.ServiceException;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.messaging.TopicManagementHelper;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import mas.AgentUtil;
 import mas.Constants;
 import mas.behaviour.auctioneer.SendAuctionRequest;
-import mas.behaviour.auctioneer.SingleUnitEnglishAuction;
 import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
-import mas.onto.Good;
-import mas.onto.AuctionDescription.AuctionType;
 
 /**
  * JADE agent representing an auctioneer of an auction.
