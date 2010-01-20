@@ -9,27 +9,30 @@ import java.util.Set;
  * 
  */
 public class AuctionDescription implements Concept {
-
     /**
-     * Enumeration of possible auction types.
+     * Possible auction types.
      */
-    public static enum AuctionType {
-        ENGLISH, DUTCH, JAPANESE;
-    }
+    public static final String ENGLISH_AUCTION = "english";
+    public static final String DUTCH_AUCTION = "dutch";
+    public static final String JAPANESE_AUCTION = "japanese";
 
-    private AuctionType auctionType;
+    private String auctionType;
     
     private Set<Good> goods = null;
 
     public AuctionDescription(){}
     
-    public AuctionDescription(AuctionType auctionType, Set<Good> goods) {
+    public AuctionDescription(String auctionType, Set<Good> goods) {
         this.auctionType = auctionType;
         this.goods = goods;
     }
     
-    public AuctionType getAuctionType() {
+    public String getAuctionType() {
         return auctionType;
+    }
+    
+    public void setAuctionType(String type){
+        this.auctionType = type;
     }
 
     public Set<Good> getGoods() {
