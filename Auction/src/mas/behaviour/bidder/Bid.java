@@ -24,6 +24,9 @@ public class Bid extends OneShotBehaviour {
         //use the bidder's strategy to determine the next bid
         Strategy strategy = getBidder().getCurrentStrategy();
         mas.onto.Bid bid = strategy.getNextBid();
+        if(bid == null){
+        	return;
+        }
         
         //construct the bid message
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
