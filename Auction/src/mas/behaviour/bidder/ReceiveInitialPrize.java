@@ -8,17 +8,18 @@ import jade.content.onto.UngroundedException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.ServiceException;
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.messaging.TopicManagementHelper;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import mas.Constants;
 import mas.agent.Bidder;
 import mas.onto.AuctionOntology;
+import mas.onto.Good;
 import mas.onto.Prize;
 import mas.onto.Register;
 
-public class ReceiveInitialPrize extends CyclicBehaviour {
+public class ReceiveInitialPrize extends OneShotBehaviour {
     
     public ReceiveInitialPrize(Bidder agent){
         super(agent);
@@ -36,6 +37,12 @@ public class ReceiveInitialPrize extends CyclicBehaviour {
                 if(action.getAction() instanceof Prize){
                     Prize prize = (Prize)action.getAction();
                     int initialPrize = prize.getAmmount();
+                    
+                    //
+                    Bidder b = ((Bidder)myAgent);
+                    //TODO: make it generic and not expect only one good
+                    Good theGood = b.getAuction().getGoods().iterator().next();
+                    b.setLastPrize(theGood, initialPrize);
                 }
             }
         } catch (UngroundedException e) {
