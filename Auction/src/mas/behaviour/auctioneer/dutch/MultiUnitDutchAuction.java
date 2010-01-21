@@ -25,10 +25,9 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         		auctionDescription.getGoods().iterator().next().getAvailableCount()));
         myAgent.addBehaviour(b);
         // TODO 
-        //check messages, subtract goods, decrease by minimum step
         //if there are goods left and the price is not minimum
         //decrease price by minimum step 
-        //announce price again by adding behaviour multiUnitDutchAuction
+        //else stop
 
     }
     

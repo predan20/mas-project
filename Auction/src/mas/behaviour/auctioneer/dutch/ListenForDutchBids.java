@@ -46,8 +46,14 @@ public class ListenForDutchBids extends OneShotBehaviour {
                 
                 if(action.getAction() instanceof Bid){
                     Bid bid = (Bid)action.getAction();
-                    int ammount = bid.getAmmount();
-                    int numberOfItems = bid.getNumberOfItems();
+                    int offeredAmmount = bid.getAmmount();
+                    int requestedItems = bid.getNumberOfItems();
+                    if (offeredAmmount==price*requestedItems && requestedItems <= numberOfGoods){
+                    	//if offer is made for this price and it's realizable
+                    	//TODO update numberOfGoods
+                    }
+                   
+                    
                 }
             }
         } catch (UngroundedException e) {
