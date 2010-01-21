@@ -37,6 +37,7 @@ public class Bid extends OneShotBehaviour {
 
         // add the Bid instance using the content manager
         try {
+        	System.out.println(myAgent.getLocalName()+": bids "+bid.getAmmount()+" for "+bid.getNumberOfItems()+"items");
             myAgent.getContentManager().fillContent(msg, new Action(myAgent.getAID(), bid));
         } catch (CodecException e) {
             throw new RuntimeException(e);
