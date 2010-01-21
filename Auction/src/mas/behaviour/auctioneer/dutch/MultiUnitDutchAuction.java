@@ -38,7 +38,7 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         	theGoods.setInitialPrize(price-minStep);
         }
         else{
-        //stop
+        	stop();
         }
         
         
@@ -46,7 +46,8 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
     
   @Override
   	public void stop() {
-	// TODO Auto-generated method stub
+	// Auto-generated method stub
+	 // TODO another behaviour that adds to the topic that the auction stopped?
 	super.stop();
 }
     

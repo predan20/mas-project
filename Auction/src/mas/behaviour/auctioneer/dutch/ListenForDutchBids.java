@@ -52,9 +52,10 @@ public class ListenForDutchBids extends OneShotBehaviour {
                     int requestedItems = bid.getNumberOfItems();
                     if (offeredAmmount==price*requestedItems && requestedItems <= numberOfGoods){
                     	//if offer is made for this price and it's realizable
-                    	//TODO check if it's OK
-                    	//TODO update numberOfGoods?
-                    	//send message to the topic with updates
+                    	//TODO check if next three comments are OK
+                    	//update numberOfGoods
+                    	getAuctioneer().getAuctionDescription().getGoods().iterator().next().setAvailableCount(numberOfGoods-requestedItems);
+                    	//send message to the topic with updates?
                     	//send message for the winner
                     	SequentialBehaviour b = new SequentialBehaviour();
                         b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), price, numberOfGoods-requestedItems));
