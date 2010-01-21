@@ -53,7 +53,7 @@ public class ListenForDutchBids extends OneShotBehaviour {
                     if (offeredAmmount==price*requestedItems && requestedItems <= numberOfGoods){
                     	//if offer is made for this price and it's realizable
                     	//TODO check if it's OK
-                    	//update numberOfGoods
+                    	//TODO update numberOfGoods?
                     	//send message to the topic with updates
                     	//send message for the winner
                     	SequentialBehaviour b = new SequentialBehaviour();

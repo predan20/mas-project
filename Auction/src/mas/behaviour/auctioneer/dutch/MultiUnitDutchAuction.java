@@ -6,6 +6,7 @@ import jade.core.behaviours.TickerBehaviour;
 import mas.agent.Auctioneer;
 import mas.behaviour.auctioneer.AnnouncePrize;
 import mas.onto.AuctionDescription;
+import mas.onto.Good;
 
 public class MultiUnitDutchAuction extends TickerBehaviour {
     private final AuctionDescription auctionDescription;
@@ -28,7 +29,19 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         //if there are goods left and the price is not minimum
         //decrease price by minimum step 
         //else stop
-
+        Good theGoods = getAuctioneer().getAuctionDescription().getGoods().iterator().next();
+        int goodsLeft=theGoods.getAvailableCount();
+        int price=theGoods.getInitialPrize();
+        int minStep=getAuctioneer().getAuctionDescription().getMinStep();
+        int minPrice=theGoods.getReservationPrize();
+        if (goodsLeft>0 && price-minStep >= minPrice){
+        	theGoods.setInitialPrize(price-minStep);
+        }
+        else{
+        //stop
+        }
+        
+        
     }
     
   @Override
