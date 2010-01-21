@@ -31,4 +31,12 @@ public class BidderConfig {
     public int getItemsWanted() {
         return itemsWanted;
     }
+
+	public void setBudget(int budget) {
+		this.budget = budget;
+	}
+
+	public void setItemsWanted(int itemsWanted) {
+		this.itemsWanted = itemsWanted;
+	}
 }

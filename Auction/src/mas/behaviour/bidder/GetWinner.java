@@ -15,6 +15,7 @@ import jade.lang.acl.MessageTemplate;
 import mas.Constants;
 import mas.agent.Bidder;
 import mas.onto.AuctionOntology;
+import mas.onto.BidderConfig;
 import mas.onto.Prize;
 import mas.onto.Register;
 import mas.onto.Winner;
@@ -41,7 +42,11 @@ public class GetWinner extends CyclicBehaviour {
                     {
                     	int soldItems = wBidder.getSoldItems();
                     	int soldPrice = wBidder.getSoldPrice();
-                    	//TODO update items and price for bidder
+                    	//TODO update items and price for bidder - done?
+                    	Bidder myBidder = (Bidder) myAgent;
+                    	BidderConfig myBidderState= myBidder.getBidderState();
+                    	myBidderState.setBudget(myBidderState.getBudget()-wBidder.getSoldPrice());
+                    	myBidderState.setItemsWanted(myBidderState.getItemsWanted()-wBidder.getSoldItems());
                     }
                 }
             }

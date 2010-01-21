@@ -34,10 +34,12 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         int price=theGoods.getInitialPrize();
         int minStep=getAuctioneer().getAuctionDescription().getMinStep();
         int minPrice=theGoods.getReservationPrize();
+        System.out.println("goodsLeft,price,minStep,minPrice = "+goodsLeft+" "+price+" "+minStep+" "+minPrice);
         if (goodsLeft>0 && price-minStep >= minPrice){
         	theGoods.setInitialPrize(price-minStep);
         }
         else{
+        	System.out.println("exit through stop");
         	stop();
         }
         

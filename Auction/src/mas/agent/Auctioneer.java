@@ -36,11 +36,11 @@ public class Auctioneer extends Agent {
     @Override
     protected void setup() {
         //sleep for 20 sec, so that the Sniffer agant can be started
-        try {
-    	Thread.currentThread().sleep(20000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//    	Thread.currentThread().sleep(20000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         
         // register to the AUCTION topic
         try {

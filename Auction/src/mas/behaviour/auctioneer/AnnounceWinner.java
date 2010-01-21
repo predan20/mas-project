@@ -38,7 +38,7 @@ public class AnnounceWinner extends OneShotBehaviour {
         // simply add an instance of the prize concept using the content
         // manager
         try {
-        	System.out.println(myAgent.getLocalName()+": Announces winner "+this.winner.getLocalName()+" with items "+soldItems+" and price "+soldPrice);
+        	System.out.println(myAgent.getLocalName()+": Announces winner "+" with items "+soldItems+" and price "+soldPrice);
             myAgent.getContentManager().fillContent(msg, new Action(myAgent.getAID(), new Winner(this.winner, soldItems,soldPrice)));
         } catch (CodecException e) {
             throw new RuntimeException(e);
