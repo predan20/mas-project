@@ -21,8 +21,11 @@ import java.util.Set;
 import mas.agent.Auctioneer;
 import mas.agent.Bidder;
 import mas.agent.strategy.AllInStrategy;
+import mas.agent.strategy.MUDutch;
+import mas.agent.strategy.MUDutchAllOrNothing;
 import mas.agent.strategy.Strategy;
 import mas.behaviour.auctioneer.english.SingleUnitEnglishAuction;
+import mas.behaviour.auctioneer.dutch.MultiUnitDutchAuction;
 import mas.onto.AuctionDescription;
 import mas.onto.BidderConfig;
 import mas.onto.Good;
@@ -36,6 +39,8 @@ public class AgentUtil {
     public static final Map<String, Class<? extends Strategy>> strategies = new HashMap<String, Class<? extends Strategy>>();
     static{
         strategies.put("ALL_IN", AllInStrategy.class);
+        strategies.put("MUD", MUDutch.class);
+        strategies.put("MUDAON", MUDutchAllOrNothing.class);
     }
     
     
@@ -142,6 +147,11 @@ public class AgentUtil {
                 return new SingleUnitEnglishAuction(agent, desc);
             }
         }
+        else if (AuctionDescription.DUTCH_AUCTION.equals(desc.getAuctionType())){
+            if(desc.getGoods().size() == 1){
+                return new MultiUnitDutchAuction(agent, desc);
+            }
+        }
         return null; 
     }
     
@@ -157,8 +167,11 @@ public class AgentUtil {
                 return new mas.behaviour.bidder.english.SingleUnitEnglishAuction(agent, desc);
             }
         }
-        else if (AuctionDescription.DUTCH_AUCTION.equals(desc.getAuctionType()))
-        	{}
+        else if (AuctionDescription.DUTCH_AUCTION.equals(desc.getAuctionType())){
+        	if(desc.getGoods().size() == 1){
+                return new mas.behaviour.bidder.dutch.MultiUnitDutchAuction(agent, desc);
+            }
+        }
         return null; 
     }
     

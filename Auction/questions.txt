@@ -1,1 +1,18 @@
 type and number of items for each bidder. 
+
+Auctioneer
+- AuctionRequest
+- MultiUnitEnglishAuction (through AgentUtil)
+	- AnnouncePrize
+OR
+- MultiUnitDutchAuction (through AgentUtil) -- to be done
+
+Bidder
+- loadConfiguration //reads the current config of the bidder
+- HandleAuctionRequest 
+	- MultiUnitEnglishAuction:bidder (through AgentUtil, in PrepareResultNotification)
+		- receiveInitialPrize
+		- Bid
+			- strategy.getNextBid
+	OR
+	- MultiUnitDutchAuction:bidder (through AgentUtil, in PrepareResultNotification) -- to be done
