@@ -17,6 +17,7 @@ import jade.lang.acl.MessageTemplate;
 import mas.Constants;
 import mas.agent.Auctioneer;
 import mas.behaviour.auctioneer.AnnouncePrize;
+import mas.behaviour.auctioneer.AnnounceWinner;
 //import mas.behaviour.bidder.ReceiveInitialPrize.PrizeMatchExpression;
 import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
@@ -51,11 +52,13 @@ public class ListenForDutchBids extends OneShotBehaviour {
                     int requestedItems = bid.getNumberOfItems();
                     if (offeredAmmount==price*requestedItems && requestedItems <= numberOfGoods){
                     	//if offer is made for this price and it's realizable
-                    	//TODO update numberOfGoods
+                    	//TODO check if it's OK
+                    	//update numberOfGoods
                     	//send message to the topic with updates
                     	//send message for the winner
                     	SequentialBehaviour b = new SequentialBehaviour();
                         b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), price, numberOfGoods-requestedItems));
+                        b.addSubBehaviour(new AnnounceWinner(getAuctioneer(), bidder, requestedItems, offeredAmmount));
                         myAgent.addBehaviour(b);
                     }
                    
