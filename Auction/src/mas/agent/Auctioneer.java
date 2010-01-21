@@ -36,11 +36,11 @@ public class Auctioneer extends Agent {
     @Override
     protected void setup() {
         //sleep for 20 sec, so that the Sniffer agant can be started
-//        try {
-//            Thread.currentThread().sleep(20000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+    	Thread.currentThread().sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         
         // register to the AUCTION topic
         try {
@@ -64,14 +64,14 @@ public class Auctioneer extends Agent {
 
         //add one sequential behavior
         SequentialBehaviour tournamentLifecycle = new SequentialBehaviour(this);
-        tournamentLifecycle.addSubBehaviour(new SendAuctionRequest(this, getAuctionDesciption()));
-        tournamentLifecycle.addSubBehaviour(AgentUtil.createAuctioneerBehaviour(getAuctionDesciption(), this));
+        tournamentLifecycle.addSubBehaviour(new SendAuctionRequest(this, getAuctionDescription()));
+        tournamentLifecycle.addSubBehaviour(AgentUtil.createAuctioneerBehaviour(getAuctionDescription(), this));
         
         addBehaviour(tournamentLifecycle);
     }
 
 
-    private AuctionDescription getAuctionDesciption(){
+    public AuctionDescription getAuctionDescription(){
         if(auctionDescription == null){
             auctionDescription = AgentUtil.readAuctionDescription(configFile);
         }
