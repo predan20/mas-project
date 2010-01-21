@@ -46,11 +46,17 @@ public class ListenForDutchBids extends OneShotBehaviour {
                 
                 if(action.getAction() instanceof Bid){
                     Bid bid = (Bid)action.getAction();
+                    AID bidder = bid.getAgent();
                     int offeredAmmount = bid.getAmmount();
                     int requestedItems = bid.getNumberOfItems();
                     if (offeredAmmount==price*requestedItems && requestedItems <= numberOfGoods){
                     	//if offer is made for this price and it's realizable
                     	//TODO update numberOfGoods
+                    	//send message to the topic with updates
+                    	//send message for the winner
+                    	SequentialBehaviour b = new SequentialBehaviour();
+                        b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), price, numberOfGoods-requestedItems));
+                        myAgent.addBehaviour(b);
                     }
                    
                     
