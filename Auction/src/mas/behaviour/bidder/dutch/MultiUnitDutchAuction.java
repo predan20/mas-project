@@ -4,6 +4,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import mas.agent.Bidder;
 import mas.behaviour.bidder.Bid;
+import mas.behaviour.bidder.GetWinner;
 import mas.behaviour.bidder.ReceiveInitialPrize;
 import mas.onto.AuctionDescription;
 
@@ -21,7 +22,8 @@ public class MultiUnitDutchAuction extends OneShotBehaviour {
         
         b.addSubBehaviour(new ReceiveInitialPrize(getBidder()));
         b.addSubBehaviour(new Bid(getBidder()));
-        
+        b.addSubBehaviour(new GetWinner(getBidder()));
+        //TODO something here to run it/stop it
         myAgent.addBehaviour(b);
 
     }
