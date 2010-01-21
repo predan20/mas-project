@@ -18,7 +18,7 @@ public class SingleUnitEnglishAuction extends OneShotBehaviour {
     public void action() {
         SequentialBehaviour b = new SequentialBehaviour();
         
-        b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize()));
+        b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize(), 1));
         
         myAgent.addBehaviour(b);
 

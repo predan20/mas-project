@@ -14,10 +14,12 @@ import mas.onto.Prize;
 public class AnnouncePrize extends OneShotBehaviour {
 
     private final int prize;
+    private final int items;
 
-    public AnnouncePrize(Auctioneer agent, int prize) {
+    public AnnouncePrize(Auctioneer agent, int prize, int items) {
         super(agent);
         this.prize = prize;
+        this.items = items;
     }
 
     @Override

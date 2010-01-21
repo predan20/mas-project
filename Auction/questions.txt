@@ -1,4 +1,9 @@
 type and number of items for each bidder. 
+stop method for OnTick behaviour -> auctioneer MUDutch
+add new behav to listen, check if it's ok, update state, 
+update the bid
+
+
 
 Auctioneer
 - AuctionRequest

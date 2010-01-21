@@ -2,27 +2,41 @@ package mas.behaviour.auctioneer.dutch;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import mas.agent.Auctioneer;
 import mas.behaviour.auctioneer.AnnouncePrize;
 import mas.onto.AuctionDescription;
 
-public class MultiUnitDutchAuction extends OneShotBehaviour {
+public class MultiUnitDutchAuction extends TickerBehaviour {
     private final AuctionDescription auctionDescription;
     
     
     public MultiUnitDutchAuction(Auctioneer agent, AuctionDescription desc){
-        super(agent);
+        super(agent, 1500);
         auctionDescription = desc;
     }
     @Override
-    public void action() {
+    public void onTick() {
         SequentialBehaviour b = new SequentialBehaviour();
         
-        b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize()));
-        
+        b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize(),
+        		auctionDescription.getGoods().iterator().next().getAvailableCount()));
+        b.addSubBehaviour(new ListenForDutchBids(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize(), 
+        		auctionDescription.getGoods().iterator().next().getAvailableCount()));
         myAgent.addBehaviour(b);
+        // TODO 
+        //check messages, subtract goods, decrease by minimum step
+        //if there are goods left and the price is not minimum
+        //decrease price by minimum step 
+        //announce price again by adding behaviour multiUnitDutchAuction
 
     }
+    
+  @Override
+  	public void stop() {
+	// TODO Auto-generated method stub
+	super.stop();
+}
     
     public Auctioneer getAuctioneer(){
         return (Auctioneer) myAgent;

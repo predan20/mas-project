@@ -23,6 +23,7 @@ public class MUDutch extends AbstractStrategy {
      */
     public Bid getNextBid() {
 		
+    	// TODO retrieve itemsAvailable and lastPrice is ok??
     	Good theGood=getBidder().getAuction().getGoods().iterator().next();
     	int itemsAvailable = theGood.getAvailableCount();
     	int lastPrice=getBidder().getLastPrize(theGood);
@@ -39,7 +40,7 @@ public class MUDutch extends AbstractStrategy {
     	if (itemsAvailable>0 && 
     			(budget/itemsWanted*maxItemsToGet)>=lastPrice*maxItemsToGet && 
     			Math.random()<riskFactor)
-    		return new Bid(lastPrice, this.getBidder().getAID());
+    		return new Bid(lastPrice, 1, this.getBidder().getAID());
     	
     	return null;
     }
