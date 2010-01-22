@@ -20,8 +20,7 @@ public class Bid extends OneShotBehaviour {
     public void action() {
         //use the bidder's strategy to determine the next bid
         Strategy strategy = getBidder().getCurrentStrategy();
-        System.out.println("in BID "+" "+getBidder().getBidderState().getBudget()+" "+getBidder().getBidderState().getItemsWanted());
-        
+                
         mas.onto.Bid bid = strategy.getNextBid();
         if(bid == null){
         	return;

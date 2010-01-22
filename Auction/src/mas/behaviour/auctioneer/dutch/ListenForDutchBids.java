@@ -16,8 +16,10 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import mas.Constants;
 import mas.agent.Auctioneer;
+import mas.agent.Bidder;
 import mas.behaviour.auctioneer.AnnouncePrize;
 import mas.behaviour.auctioneer.AnnounceWinner;
+//import mas.behaviour.bidder.ReceiveBids.BidMatchExpression;
 //import mas.behaviour.bidder.ReceiveInitialPrize.PrizeMatchExpression;
 import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
@@ -38,8 +40,12 @@ public class ListenForDutchBids extends OneShotBehaviour {
     
     @Override
     public void action() {
-    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate());
-        
+    	System.out.println(myAgent.getLocalName()+" is listening for bids");
+    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate(),2000); //TODO this is the problem
+        System.out.println(myAgent.getLocalName()+"still listening");
+        if (msg == null)
+        	System.out.println("no message arrived for "+myAgent.getLocalName());
+        else
         try {
             ContentElement el = myAgent.getContentManager().extractContent(msg);
             if(el instanceof Action){
@@ -75,7 +81,7 @@ public class ListenForDutchBids extends OneShotBehaviour {
         }
     }
     
-    
+    /*
     private MessageTemplate getMessageTemplate() {
         TopicManagementHelper topicHelper;
         try {
@@ -123,5 +129,63 @@ public class ListenForDutchBids extends OneShotBehaviour {
             return false;
         }
     }
-
+*/
+    
+    
+    
+    private MessageTemplate getMessageTemplate() {
+        TopicManagementHelper topicHelper;
+        try {
+            topicHelper = (TopicManagementHelper) myAgent.getHelper(TopicManagementHelper.SERVICE_NAME);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+        AID jadeTopic = topicHelper.createTopic(Constants.AUCTION_TOPIC);
+        
+        
+        MessageTemplate template = MessageTemplate.and(
+                MessageTemplate.and (MessageTemplate.MatchPerformative(ACLMessage.INFORM), 
+                        MessageTemplate.MatchTopic(jadeTopic)), 
+                MessageTemplate.and (MessageTemplate.MatchOntology(AuctionOntology.ONTOLOGY_NAME), 
+                        new MessageTemplate(new BidMatchExpression(myAgent.getContentManager()))));
+        return template;
+    }
+    
+    public Auctioneer getBidder(){
+        return (Auctioneer) myAgent;
+    }
+    
+    private class BidMatchExpression implements MessageTemplate.MatchExpression{
+        private ContentManager cm = null;
+        
+        public BidMatchExpression(ContentManager cm){
+            this.cm = cm;
+        }
+        
+        
+        @Override
+        public boolean match(ACLMessage msg) {
+            //accept the Bid announcement only from the Auctioneer
+           // if(!msg.getSender().equals(getBidder().getAuctioneer())){
+           //     return false;
+            //}
+            
+            try {
+                ContentElement el = cm.extractContent(msg);
+                if(el instanceof Action && ((Action)el).getAction() instanceof Bid){
+                    return true;
+                }
+            } catch (UngroundedException e) {
+                throw new RuntimeException(e);
+            } catch (CodecException e) {
+                throw new RuntimeException(e);
+            } catch (OntologyException e) {
+                throw new RuntimeException(e);
+            }
+            return false;
+        }
+    }
+    public Auctioneer getAuctioneer(){
+        return (Auctioneer) myAgent;
+    }
 }

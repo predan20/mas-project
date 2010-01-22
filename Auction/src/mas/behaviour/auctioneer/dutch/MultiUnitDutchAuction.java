@@ -18,6 +18,19 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
     }
     @Override
     public void onTick() {
+    	
+    	Good theGoods = getAuctioneer().getAuctionDescription().getGoods().iterator().next();
+        int goodsLeft=theGoods.getAvailableCount();
+        int price=theGoods.getInitialPrize();
+        int minStep=getAuctioneer().getAuctionDescription().getMinStep();
+        int minPrice=theGoods.getReservationPrize();
+    	
+    	
+    	if (goodsLeft<=0 || price < minPrice){
+        	System.out.println(myAgent.getLocalName()+": END of AUCTION. There are no more goods left or the minimum price has been reached");
+        	stop();
+        }
+    	else {
         SequentialBehaviour b = new SequentialBehaviour();
         
         b.addSubBehaviour(new AnnouncePrize(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize(),
@@ -25,23 +38,21 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         b.addSubBehaviour(new ListenForDutchBids(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize(), 
         		auctionDescription.getGoods().iterator().next().getAvailableCount()));
         myAgent.addBehaviour(b);
+        //System.out.println("goodsLeft,price,minStep,minPrice = "+goodsLeft+" "+price+" "+minStep+" "+minPrice);
+        if (goodsLeft>0 && price >= minPrice){
+        	theGoods.setInitialPrize(price-minStep);
+        }
+    	}
         // TODO 
         //if there are goods left and the price is not minimum
         //decrease price by minimum step 
         //else stop
-        Good theGoods = getAuctioneer().getAuctionDescription().getGoods().iterator().next();
-        int goodsLeft=theGoods.getAvailableCount();
-        int price=theGoods.getInitialPrize();
-        int minStep=getAuctioneer().getAuctionDescription().getMinStep();
-        int minPrice=theGoods.getReservationPrize();
-        System.out.println("goodsLeft,price,minStep,minPrice = "+goodsLeft+" "+price+" "+minStep+" "+minPrice);
-        if (goodsLeft>0 && price/*-minStep*/ >= minPrice){
-        	theGoods.setInitialPrize(price-minStep);
-        }
-        else{
+        
+        
+        /*else{
         	System.out.println("exit through stop");
         	stop();
-        }
+        }*/
         
         
     }

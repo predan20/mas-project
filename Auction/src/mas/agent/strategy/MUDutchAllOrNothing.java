@@ -32,7 +32,7 @@ public class MUDutchAllOrNothing extends AbstractStrategy {
     	double riskFactor=0.95; //for which the player would go lower even if he affords the items
     	
     	if (itemsAvailable>=itemsWanted && budget>=lastPrice*itemsWanted && Math.random()<riskFactor){
-    		System.out.println("MUDAON: "+lastPrice*itemsWanted+" "+ itemsWanted+" "+ this.getBidder().getLocalName()+" "+budget);
+    		
     		return new Bid(lastPrice*itemsWanted, itemsWanted, this.getBidder().getAID());
     	}
     	return null;

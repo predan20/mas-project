@@ -40,7 +40,7 @@ public class MUDutch extends AbstractStrategy {
     	if (itemsAvailable>0 && 
     			(budget/itemsWanted*maxItemsToGet)>=lastPrice*maxItemsToGet && 
     			Math.random()<riskFactor){
-    		System.out.println("MUD: "+lastPrice+" "+ 1+" "+ this.getBidder().getLocalName()+" "+budget);
+    		
     		return new Bid(lastPrice, 1, this.getBidder().getAID());
     	}
     	
