@@ -27,7 +27,11 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
     	
     	
     	if (goodsLeft<=0 || price < minPrice){
-        	System.out.println(myAgent.getLocalName()+": END of AUCTION. There are no more goods left or the minimum price has been reached");
+        	System.out.print(myAgent.getLocalName()+": END of AUCTION. ");
+        	if (goodsLeft<=0)
+        		System.out.println("There are no more goods left");
+        	else
+        		System.out.println("The minimum price has been reached");
         	stop();
         }
     	else {
