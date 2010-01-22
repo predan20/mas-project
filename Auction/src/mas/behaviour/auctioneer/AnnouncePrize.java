@@ -35,7 +35,9 @@ public class AnnouncePrize extends OneShotBehaviour {
         // manager
         try {
         	System.out.println(myAgent.getLocalName()+": Announces price "+prize+" for "+this.items+" items");
-            myAgent.getContentManager().fillContent(msg, new Action(myAgent.getAID(), new Prize(prize)));
+            Prize p=new Prize(prize);
+            System.out.println("building the Price object: ammount="+p.getAmmount());
+        	myAgent.getContentManager().fillContent(msg, new Action(myAgent.getAID(), new Prize(prize)));
         } catch (CodecException e) {
             throw new RuntimeException(e);
         } catch (OntologyException e) {

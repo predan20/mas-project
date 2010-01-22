@@ -28,7 +28,7 @@ public class ReceiveInitialPrize extends OneShotBehaviour {
     @Override
     public void action() {
         ACLMessage msg = myAgent.blockingReceive(getMessageTemplate());
-        
+        System.out.println("RECEIVES INITIAL PRICE");
         try {
             ContentElement el = myAgent.getContentManager().extractContent(msg);
             if(el instanceof Action){
@@ -37,12 +37,14 @@ public class ReceiveInitialPrize extends OneShotBehaviour {
                 if(action.getAction() instanceof Prize){
                     Prize prize = (Prize)action.getAction();
                     int initialPrize = prize.getAmmount();
-                    
+                    System.out.println("Initial price: "+initialPrize);
                     //
                     Bidder b = ((Bidder)myAgent);
                     //TODO: make it generic and not expect only one good
                     Good theGood = b.getAuction().getGoods().iterator().next();
                     b.setLastPrize(theGood, initialPrize);
+                    Bidder c = (Bidder) myAgent;
+                    System.out.println("b,c:"+b.getLastPrize(theGood)+" "+c.getLastPrize(theGood));
                 }
             }
         } catch (UngroundedException e) {
