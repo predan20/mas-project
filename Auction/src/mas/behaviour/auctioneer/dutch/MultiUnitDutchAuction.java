@@ -43,7 +43,7 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         	theGoods.setInitialPrize(price-minStep);
         }
     	}
-        // TODO 
+        // 
         //if there are goods left and the price is not minimum
         //decrease price by minimum step 
         //else stop
