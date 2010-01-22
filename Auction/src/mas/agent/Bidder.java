@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jade.content.lang.sl.SLCodec;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ServiceException;
 import jade.core.messaging.TopicManagementHelper;
@@ -15,6 +16,7 @@ import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
 import mas.onto.BidderConfig;
 import mas.onto.Good;
+import mas.onto.Bid;
 /**
  * JADE agent representing a bidder in an auction.
  * It has single sequential behavior containing the following behaviors:
@@ -29,6 +31,8 @@ public class Bidder extends Agent {
 	private BidderConfig bidderState;
 	private AuctionDescription auction;
     private Map<Good, Integer> lastPrizes = new HashMap<Good, Integer>();
+    private AID auctioneer;
+    private Bid lastBid;
     
 
 	@Override
@@ -92,4 +96,20 @@ public class Bidder extends Agent {
 	public void setLastPrize(Good good, int value){
 		lastPrizes.put(good, value);
 	}
+
+    public AID getAuctioneer() {
+        return auctioneer;
+    }
+
+    public void setAuctioneer(AID auctioneer) {
+        this.auctioneer = auctioneer;
+    }
+
+    public Bid getLastBid() {
+        return lastBid;
+    }
+
+    public void setLastBid(Bid lastBid) {
+        this.lastBid = lastBid;
+    }
 }

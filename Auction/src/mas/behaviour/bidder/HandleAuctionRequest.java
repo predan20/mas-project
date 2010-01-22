@@ -55,6 +55,7 @@ public class HandleAuctionRequest extends SimpleAchieveREResponder {
                     AuctionDescription desc = reg.getAuctionDesciption();
                     if(desc != null){
                         getBidder().setAuction(desc);
+                        getBidder().setAuctioneer(request.getSender());
                         myAgent.addBehaviour(AgentUtil.createBidderBehaviour(desc, getBidder()));
                     }
                 }

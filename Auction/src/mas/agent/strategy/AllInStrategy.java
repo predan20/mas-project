@@ -10,7 +10,7 @@ public class AllInStrategy extends AbstractStrategy {
     }
     @Override
     public Bid getNextBid() {
-        return null;
+        return new Bid(getBidder().getBidderState().getBudget(), 1, getBidder().getAID());
     }
 
 }

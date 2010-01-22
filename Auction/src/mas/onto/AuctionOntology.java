@@ -1,5 +1,6 @@
 package mas.onto;
 
+import jade.content.onto.BasicOntology;
 import jade.content.onto.BeanOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -14,7 +15,7 @@ public class AuctionOntology extends BeanOntology {
     public static final String ONTOLOGY_NAME = "Auction-ontology";
     
     // The singleton instance of this ontology
-    private static Ontology theInstance = new AuctionOntology(ONTOLOGY_NAME);
+    private static Ontology theInstance = new AuctionOntology(ONTOLOGY_NAME, BasicOntology.getInstance());
 
     public static Ontology getInstance() {
         return theInstance;
@@ -23,8 +24,8 @@ public class AuctionOntology extends BeanOntology {
     /**
      * Constructor
      */
-    private AuctionOntology(String name) {
-        super(name);
+    private AuctionOntology(String name, Ontology base) {
+        super(name, base);
 
         try {
             add("mas.onto");

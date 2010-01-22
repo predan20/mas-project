@@ -144,7 +144,7 @@ public class AgentUtil {
     public static Behaviour createAuctioneerBehaviour(AuctionDescription desc, Auctioneer agent){
         if(AuctionDescription.ENGLISH_AUCTION.equals(desc.getAuctionType())){
             if(desc.getGoods().size() == 1 && desc.getGoods().iterator().next().getAvailableCount() == 1){
-                return new SingleUnitEnglishAuction(agent, desc);
+                return new SingleUnitEnglishAuction(agent);
             }
         }
         else if (AuctionDescription.DUTCH_AUCTION.equals(desc.getAuctionType())){
