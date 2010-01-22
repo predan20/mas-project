@@ -10,7 +10,13 @@ public class AllInStrategy extends AbstractStrategy {
     }
     @Override
     public Bid getNextBid() {
-        return new Bid(getBidder().getBidderState().getBudget(), 1, getBidder().getAID());
+        int budget = getBidder().getBidderState().getBudget();
+        
+        Bid bid = null;
+        if(budget >= getBidder().getLastBid().getAmmount() + getBidder().getAuction().getMinStep()){
+            bid = new Bid(budget, 1, getBidder().getAID());
+        }
+        return bid;
     }
 
 }

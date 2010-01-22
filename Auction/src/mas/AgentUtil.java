@@ -23,6 +23,7 @@ import mas.agent.Bidder;
 import mas.agent.strategy.AllInStrategy;
 import mas.agent.strategy.MUDutch;
 import mas.agent.strategy.MUDutchAllOrNothing;
+import mas.agent.strategy.SingleUnitWithRiskFactor;
 import mas.agent.strategy.Strategy;
 import mas.behaviour.auctioneer.english.SingleUnitEnglishAuction;
 import mas.behaviour.auctioneer.dutch.MultiUnitDutchAuction;
@@ -41,6 +42,7 @@ public class AgentUtil {
         strategies.put("ALL_IN", AllInStrategy.class);
         strategies.put("MUD", MUDutch.class);
         strategies.put("MUDAON", MUDutchAllOrNothing.class);
+        strategies.put("RISK_FACTOR", SingleUnitWithRiskFactor.class);
     }
     
     
@@ -153,7 +155,7 @@ public class AgentUtil {
                 return new MultiUnitDutchAuction(agent, desc);
             }
         }
-        return null; 
+        throw new RuntimeException("Unsupported auction configuration. Supported is only single unit english and multy unit single type dutch."); 
     }
     
     /**
@@ -165,7 +167,7 @@ public class AgentUtil {
     public static Behaviour createBidderBehaviour(AuctionDescription desc, Bidder agent){
         if(AuctionDescription.ENGLISH_AUCTION.equals(desc.getAuctionType())){
             if(desc.getGoods().size() == 1 && desc.getGoods().iterator().next().getAvailableCount() == 1){
-                return new mas.behaviour.bidder.english.SingleUnitEnglishAuction(agent, desc);
+                return new mas.behaviour.bidder.english.SingleUnitEnglishAuction(agent);
             }
         }
         else if (AuctionDescription.DUTCH_AUCTION.equals(desc.getAuctionType())){
