@@ -29,6 +29,18 @@ public class Bid implements Concept {
     public AID getAgent() {
         return agent;
     }
+
+    public void setAmmount(int ammount) {
+        this.ammount = ammount;
+    }
+
+    public void setNumberOfItems(int numberOfItems) {
+        this.numberOfItems = numberOfItems;
+    }
+
+    public void setAgent(AID agent) {
+        this.agent = agent;
+    }
     
     
 }
