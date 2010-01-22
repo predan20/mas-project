@@ -3,7 +3,7 @@ package mas.behaviour.bidder.english;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import mas.agent.Bidder;
-import mas.behaviour.bidder.Bid;
+import mas.behaviour.bidder.BidNow;
 import mas.behaviour.bidder.ReceiveBids;
 import mas.behaviour.bidder.ReceiveInitialPrize;
 import mas.onto.AuctionDescription;
@@ -20,7 +20,7 @@ public class SingleUnitEnglishAuction extends OneShotBehaviour {
     public void action() {
         SequentialBehaviour b = new SequentialBehaviour();
         
-        b.addSubBehaviour(new Bid(getBidder()));
+        b.addSubBehaviour(new BidNow(getBidder()));
         b.addSubBehaviour(new ReceiveBids(getBidder()));
         
         myAgent.addBehaviour(b);

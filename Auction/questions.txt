@@ -9,6 +9,7 @@ TODO!!!
 //cyclic behav for bidders TODO
 //auctioneer can't see message from bidder. probably because of the 
 //							getMessageTemplate() in ListenForDutchBids	TODO
+//DONE changed in BidNow AgentUtil.addAuctionTopicReceiver(myAgent, msg); 
 //verify if in the Dutch strategies the lastPrize and itemsAvailable are correctly retrieved
 //smth happening. they're bidding 0. -> done
 //smth happening with the stop of auctioneer ->hopefully done

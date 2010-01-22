@@ -28,16 +28,19 @@ public class GetWinner extends CyclicBehaviour {
 
     @Override
     public void action() {
-        ACLMessage msg = myAgent.blockingReceive(getMessageTemplate());
-        
+        System.out.println(myAgent.getLocalName()+" is waiting for the winner");
+    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate());
+    	System.out.println(myAgent.getLocalName()+" still waiting for the winner");
         try {
             ContentElement el = myAgent.getContentManager().extractContent(msg);
+            System.out.println("waiting "+myAgent.getLocalName()+" for: "+msg.getContent());
             if(el instanceof Action){
                 Action action = (Action)el;
                 
                 if(action.getAction() instanceof Winner){
                     Winner wBidder = (Winner)action.getAction();
                     AID winner = wBidder.getWinner();
+                    System.out.println(myAgent.getLocalName()+" knows winner has AID: "+winner);
                     if (winner==myAgent.getAID())
                     {
                     	int soldItems = wBidder.getSoldItems();
@@ -48,6 +51,13 @@ public class GetWinner extends CyclicBehaviour {
                     	myBidderState.setBudget(myBidderState.getBudget()-wBidder.getSoldPrice());
                     	myBidderState.setItemsWanted(myBidderState.getItemsWanted()-wBidder.getSoldItems());
                     }
+                    try {
+						finalize();
+					} catch (Throwable e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    
                 }
             }
         } catch (UngroundedException e) {
@@ -60,6 +70,7 @@ public class GetWinner extends CyclicBehaviour {
 
     }
 
+    
     /**
      * The message template used to filter incoming messages to be handled by
      * this behavior. That is INFORM message using the {@link AuctionOntology}
@@ -98,7 +109,7 @@ public class GetWinner extends CyclicBehaviour {
         public boolean match(ACLMessage msg) {
             try {
                 ContentElement el = cm.extractContent(msg);
-                if(el instanceof Action && ((Action)el).getAction() instanceof Prize){
+                if(el instanceof Action && ((Action)el).getAction() instanceof Winner){
                     return true;
                 }
             } catch (UngroundedException e) {

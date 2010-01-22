@@ -41,7 +41,7 @@ public class ListenForDutchBids extends OneShotBehaviour {
     @Override
     public void action() {
     	System.out.println(myAgent.getLocalName()+" is listening for bids");
-    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate(),2000); //TODO this is the problem
+    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate(),5000); //TODO this is the problem
         System.out.println(myAgent.getLocalName()+"still listening");
         if (msg == null)
         	System.out.println("no message arrived for "+myAgent.getLocalName());
@@ -97,6 +97,7 @@ public class ListenForDutchBids extends OneShotBehaviour {
                         MessageTemplate.MatchTopic(jadeTopic)), 
                 MessageTemplate.and (MessageTemplate.MatchOntology(AuctionOntology.ONTOLOGY_NAME), 
                         new MessageTemplate(new BidMatchExpression(myAgent.getContentManager()))));
+        
         return template;
     }
     
@@ -115,6 +116,7 @@ public class ListenForDutchBids extends OneShotBehaviour {
         @Override
         public boolean match(ACLMessage msg) {
             try {
+            	System.out.println("listen "+msg.getContent());
                 ContentElement el = cm.extractContent(msg);
                 if(el instanceof Action && ((Action)el).getAction() instanceof Bid){
                     return true;
