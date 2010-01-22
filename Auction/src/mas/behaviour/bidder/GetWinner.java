@@ -8,7 +8,6 @@ import jade.content.onto.UngroundedException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.ServiceException;
-import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.core.messaging.TopicManagementHelper;
 import jade.lang.acl.ACLMessage;
@@ -29,24 +28,17 @@ public class GetWinner extends TickerBehaviour {
 
     @Override
     public void onTick() {
-        System.out.println(myAgent.getLocalName()+" is waiting for the winner");
     	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate());
-    	System.out.println(myAgent.getLocalName()+" still waiting for the winner");
         try {
             ContentElement el = myAgent.getContentManager().extractContent(msg);
-            System.out.println("waiting "+myAgent.getLocalName()+" for: "+msg.getContent());
             if(el instanceof Action){
                 Action action = (Action)el;
                 
                 if(action.getAction() instanceof Winner){
                     Winner wBidder = (Winner)action.getAction();
                     AID winner = wBidder.getWinner();
-                    System.out.println(myAgent.getLocalName()+" knows winner has AID: "+winner);
                     if (winner.equals(myAgent.getAID()))
                     {
-                    	System.out.println("--------HEREEEEEEEEEEEEEEEE");
-                    	int soldItems = wBidder.getSoldItems();
-                    	int soldPrice = wBidder.getSoldPrice();
                     	//TODO update items and price for bidder - done?
                     	Bidder myBidder = (Bidder) myAgent;
                     	BidderConfig myBidderState= myBidder.getBidderState();

@@ -9,7 +9,7 @@ The archive contains:
 6. confige.properties - initial state of the english auction.
 7. configd.properties - initial state of the dutch auction.
 
-NOTE: There is a 20sec timeout in the beginning in order the Sniffer agent to be started.
+**NOTE: There is a 20sec timeout in the beginning in order the Sniffer agent to be started.
 
 Solution Overview:
     
@@ -25,16 +25,14 @@ The agents communicate to each other by sending ACL messages either to the AUCTI
 	3.The auctioneer announces the successful bids to the AUCTION topic.
 	4.Bidders receive the successful bids and bid again if possible.
 	5.After 5 sec timeout with no bids the Auctioneer announces the winner (including the prize to pay) to the topic.
-	6. In case of the reservation prize is not met or no bids were announced the Auctioneer sends a FAILURE message to the topic. 
+	6.In case of the reservation prize is not met or no bids were announced the Auctioneer sends a FAILURE message to the topic. 
 
 2.2. Dutch multi unit auction
 	1.The auctioneer sends a FIPA-REQUEST with the auction configuration.
 	2.The auctioneer sends prices (lowering) to the AUCTION topic.
 	3.The Bidders receive the prices and decide if they want to bid.
-	3.The auctioneer announces the successful bids to the AUCTION topic.
-	4.Bidders receive the successful bids and bid again if possible.
-	5.After a timeout with no bids the Auctioneer lowers the price and reannounces it
-	6.The auction ends when the rezervation price is met or when all the goods are exhausted.
+	4.After a timeout with no bids the Auctioneer lowers the price and re-announces it
+	5.The auction ends when the reservation price is met or when all the goods are exhausted.
 
 
 The content of the messages is based on user-defined ontology (mas.onto.AuctionOntology) containing concepts (like REGISTER, BID, GOOD, WINNER etc.).

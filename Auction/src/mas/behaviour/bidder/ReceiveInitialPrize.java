@@ -40,10 +40,8 @@ public class ReceiveInitialPrize extends OneShotBehaviour {
                     
                     //
                     Bidder b = ((Bidder)myAgent);
-                    //TODO: make it generic and not expect only one good
                     Good theGood = b.getAuction().getGoods().iterator().next();
                     b.setLastPrize(theGood, initialPrize);
-                    System.out.println(myAgent.getLocalName()+" receives the price: "+b.getLastPrize(theGood));
                 }
             }
         } catch (UngroundedException e) {

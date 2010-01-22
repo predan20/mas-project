@@ -19,7 +19,7 @@ import mas.onto.Good;
 import mas.onto.Winner;
 
 public class HandleEnglishAuctionBids extends SimpleBehaviour {
-    public static final int AUCTION_END_TIMEOUT = 10000;
+    public static final int AUCTION_END_TIMEOUT = 5000;
     
     private Bid highestBid;
     private long timeOfLastBid = System.currentTimeMillis();

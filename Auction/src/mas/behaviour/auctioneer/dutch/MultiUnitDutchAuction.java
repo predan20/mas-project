@@ -1,6 +1,5 @@
 package mas.behaviour.auctioneer.dutch;
 
-import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import mas.agent.Auctioneer;
@@ -13,7 +12,7 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
     
     
     public MultiUnitDutchAuction(Auctioneer agent, AuctionDescription desc){
-        super(agent, 1500);
+        super(agent, 500);
         auctionDescription = desc;
     }
     @Override
@@ -27,7 +26,6 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
     	
     	
     	if (goodsLeft<=0 || price < minPrice){
-        	System.out.print(myAgent.getLocalName()+": END of AUCTION. ");
         	if (goodsLeft<=0)
         		System.out.println("There are no more goods left");
         	else
@@ -42,31 +40,11 @@ public class MultiUnitDutchAuction extends TickerBehaviour {
         b.addSubBehaviour(new ListenForDutchBids(getAuctioneer(), auctionDescription.getGoods().iterator().next().getInitialPrize(), 
         		auctionDescription.getGoods().iterator().next().getAvailableCount()));
         myAgent.addBehaviour(b);
-        //System.out.println("goodsLeft,price,minStep,minPrice = "+goodsLeft+" "+price+" "+minStep+" "+minPrice);
         if (goodsLeft>0 && price >= minPrice){
         	theGoods.setInitialPrize(price-minStep);
         }
     	}
-        // 
-        //if there are goods left and the price is not minimum
-        //decrease price by minimum step 
-        //else stop
-        
-        
-        /*else{
-        	System.out.println("exit through stop");
-        	stop();
-        }*/
-        
-        
     }
-    
-  @Override
-  	public void stop() {
-	// Auto-generated method stub
-	 // TODO another behaviour that adds to the topic that the auction stopped?
-	super.stop();
-}
     
     public Auctioneer getAuctioneer(){
         return (Auctioneer) myAgent;

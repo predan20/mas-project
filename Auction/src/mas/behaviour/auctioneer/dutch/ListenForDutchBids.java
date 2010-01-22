@@ -10,42 +10,32 @@ import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.core.messaging.TopicManagementHelper;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import mas.Constants;
 import mas.agent.Auctioneer;
-import mas.agent.Bidder;
 import mas.behaviour.auctioneer.AnnouncePrize;
 import mas.behaviour.auctioneer.AnnounceWinner;
-//import mas.behaviour.bidder.ReceiveBids.BidMatchExpression;
-//import mas.behaviour.bidder.ReceiveInitialPrize.PrizeMatchExpression;
-import mas.onto.AuctionDescription;
 import mas.onto.AuctionOntology;
 import mas.onto.Bid;
-import mas.onto.Prize;
 
 public class ListenForDutchBids extends OneShotBehaviour {
-    //private final AuctionDescription auctionDescription;
     
     private int price;
     private int numberOfGoods;
     public ListenForDutchBids(Auctioneer agent, int price, int numberOfGoods){
         super(agent);
-        //auctionDescription = desc;
         this.price = price;
         this.numberOfGoods = numberOfGoods;
     }
     
     @Override
     public void action() {
-    	System.out.println(myAgent.getLocalName()+" is listening for bids");
-    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate(),5000); //TODO this is the problem
-        System.out.println(myAgent.getLocalName()+"still listening");
-        if (msg == null)
-        	System.out.println("no message arrived for "+myAgent.getLocalName());
-        else
+    	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate(),3000);
+    	if(msg == null){
+    	    return;
+    	}
         try {
             ContentElement el = myAgent.getContentManager().extractContent(msg);
             if(el instanceof Action){
@@ -116,7 +106,6 @@ public class ListenForDutchBids extends OneShotBehaviour {
         @Override
         public boolean match(ACLMessage msg) {
             try {
-            	System.out.println("listen "+msg.getContent());
                 ContentElement el = cm.extractContent(msg);
                 if(el instanceof Action && ((Action)el).getAction() instanceof Bid){
                     return true;

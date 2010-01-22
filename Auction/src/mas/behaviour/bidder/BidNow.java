@@ -31,14 +31,12 @@ public class BidNow extends OneShotBehaviour {
         
         //construct the bid message
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-        //msg.addReceiver(getBidder().getAuctioneer());
         AgentUtil.addAuctionTopicReceiver(myAgent, msg);
         msg.setOntology(AuctionOntology.ONTOLOGY_NAME);
         msg.setLanguage(new SLCodec().getName());
 
         // add the Bid instance using the content manager
         try {
-        	System.out.println(myAgent.getLocalName()+": bids "+bid.getAmmount()+" for "+bid.getNumberOfItems()+"items");
             myAgent.getContentManager().fillContent(msg, new Action(myAgent.getAID(), bid));
         } catch (CodecException e) {
             throw new RuntimeException(e);
@@ -47,10 +45,8 @@ public class BidNow extends OneShotBehaviour {
         }
         myAgent.send(msg);
         
-        //TODO -> check if this is correct!
         if ((getBidder().getCurrentStrategy() instanceof MUDutch )||(getBidder().getCurrentStrategy() instanceof MUDutchAllOrNothing ))
         	myAgent.addBehaviour(new GetWinner(getBidder()));
-        System.out.println(msg.getContent());
     }
     
     public Bidder getBidder(){

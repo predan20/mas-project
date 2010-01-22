@@ -56,7 +56,6 @@ public class AgentUtil {
         }
         AID jadeTopic = topicHelper.createTopic(Constants.AUCTION_TOPIC);
         msg.addReceiver(jadeTopic);
-        //System.out.println("bla in addAuctionTopicReceiver");
     }
     
     /**

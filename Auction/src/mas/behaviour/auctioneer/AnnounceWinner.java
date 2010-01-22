@@ -10,7 +10,6 @@ import jade.lang.acl.ACLMessage;
 import mas.AgentUtil;
 import mas.agent.Auctioneer;
 import mas.onto.AuctionOntology;
-import mas.onto.Prize;
 import mas.onto.Winner;
 
 public class AnnounceWinner extends OneShotBehaviour {
@@ -38,7 +37,6 @@ public class AnnounceWinner extends OneShotBehaviour {
         // simply add an instance of the prize concept using the content
         // manager
         try {
-        	System.out.println(myAgent.getLocalName()+": Announces winner "+winner.getLocalName()+" with items "+soldItems+" and price "+soldPrice);
             myAgent.getContentManager().fillContent(msg, new Action(myAgent.getAID(), new Winner(this.winner, soldItems,soldPrice)));
         } catch (CodecException e) {
             throw new RuntimeException(e);

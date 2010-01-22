@@ -27,7 +27,7 @@ public class SingleUnitWithRiskFactor extends AbstractStrategy {
     	int newBidAmmount = lastPrice + getBidder().getAuction().getMinStep();
     	double riskFactor=0.90; //for which the player would go lower even if he affords the items
     	
-    	if (newBidAmmount <= getBidder().getBidderState().getBudget() /*&& Math.random() < riskFactor*/){
+    	if (newBidAmmount <= getBidder().getBidderState().getBudget() && Math.random() < riskFactor){
     		return new Bid(newBidAmmount, 1, this.getBidder().getAID());
     	}
     	
