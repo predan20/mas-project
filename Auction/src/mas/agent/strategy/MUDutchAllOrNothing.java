@@ -23,17 +23,18 @@ public class MUDutchAllOrNothing extends AbstractStrategy {
      */
     public Bid getNextBid() {
 		
-    	Good theGood=getBidder().getAuction().getGoods().iterator().next();
+    	Good theGood=this.getBidder().getAuction().getGoods().iterator().next();
     	int itemsAvailable = theGood.getAvailableCount();
-    	int lastPrice=getBidder().getLastPrize(theGood);
+    	int lastPrice=this.getBidder().getLastPrize(theGood);
     	int budget=this.getBidder().getBidderState().getBudget();
     	int itemsWanted=this.getBidder().getBidderState().getItemsWanted();
     	    	
     	double riskFactor=0.95; //for which the player would go lower even if he affords the items
     	
-    	if (itemsAvailable>=itemsWanted && budget>=lastPrice*itemsWanted && Math.random()<riskFactor)
+    	if (itemsAvailable>=itemsWanted && budget>=lastPrice*itemsWanted && Math.random()<riskFactor){
+    		System.out.println("MUDAON: "+lastPrice*itemsWanted+" "+ itemsWanted+" "+ this.getBidder().getLocalName()+" "+budget);
     		return new Bid(lastPrice*itemsWanted, itemsWanted, this.getBidder().getAID());
-    	
+    	}
     	return null;
     }
 }
