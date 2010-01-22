@@ -4,9 +4,11 @@ add new behav to listen, check if it's ok, update state,
 update the bid
 
 
+TODO!!!
+
 //cyclic behav for bidders
 //smth happening. they're bidding 0.
-
+//smth happening with the stop of auctioneer
 
 Auctioneer
 - AuctionRequest
