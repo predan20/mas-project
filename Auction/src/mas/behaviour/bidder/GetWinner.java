@@ -9,6 +9,7 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.core.messaging.TopicManagementHelper;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -20,14 +21,14 @@ import mas.onto.Prize;
 import mas.onto.Register;
 import mas.onto.Winner;
 
-public class GetWinner extends CyclicBehaviour {
+public class GetWinner extends TickerBehaviour {
     
     public GetWinner(Bidder agent){
-        super(agent);
+        super(agent,300);
     }
 
     @Override
-    public void action() {
+    public void onTick() {
         System.out.println(myAgent.getLocalName()+" is waiting for the winner");
     	ACLMessage msg = myAgent.blockingReceive(getMessageTemplate());
     	System.out.println(myAgent.getLocalName()+" still waiting for the winner");
@@ -41,8 +42,9 @@ public class GetWinner extends CyclicBehaviour {
                     Winner wBidder = (Winner)action.getAction();
                     AID winner = wBidder.getWinner();
                     System.out.println(myAgent.getLocalName()+" knows winner has AID: "+winner);
-                    if (winner==myAgent.getAID())
+                    if (winner.equals(myAgent.getAID()))
                     {
+                    	System.out.println("--------HEREEEEEEEEEEEEEEEE");
                     	int soldItems = wBidder.getSoldItems();
                     	int soldPrice = wBidder.getSoldPrice();
                     	//TODO update items and price for bidder - done?
@@ -51,12 +53,7 @@ public class GetWinner extends CyclicBehaviour {
                     	myBidderState.setBudget(myBidderState.getBudget()-wBidder.getSoldPrice());
                     	myBidderState.setItemsWanted(myBidderState.getItemsWanted()-wBidder.getSoldItems());
                     }
-                    try {
-						finalize();
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                    stop();
                     
                 }
             }
