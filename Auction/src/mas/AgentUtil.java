@@ -194,10 +194,12 @@ public class AgentUtil {
         String agentName = bidder.getLocalName();
         String budgetKey = Constants.CONFIG_BIDDER_PREFIX + agentName + "." + Constants.CONFIG_BIDDER_BUDGET;
         String strategyKey = Constants.CONFIG_BIDDER_PREFIX + agentName + "." + Constants.CONFIG_BIDDER_STRATEGY;
+        String itemsKey = Constants.CONFIG_BIDDER_PREFIX + agentName + "." + Constants.CONFIG_BIDDER_ITEMS;
         
         //iterate over the keys and read the corresponding values
         Strategy strategy = null;
         int budget = 0;
+        int itemsWanted = -1;
         for (Object key : props.keySet()){
             String k = (String)key;
             if(budgetKey.equals(k)){
@@ -205,11 +207,16 @@ public class AgentUtil {
             }else if(strategyKey.equals(k)){
                 String strategyName = props.getProperty(k);
                 strategy = createStrategy(strategyName, bidder);
+            }else if(itemsKey.equals(k)){
+            	itemsWanted = Integer.parseInt(props.getProperty(k));
             }
         }
         
         //construct the BidderConfig instance from the parsed data
-        return new BidderConfig(budget, strategy);
+        if (itemsWanted != -1)
+        	return new BidderConfig(budget, strategy, itemsWanted);
+        else 
+        	return new BidderConfig(budget, strategy);
     }
     
     public static Strategy createStrategy(String strategyName, Bidder bidder){

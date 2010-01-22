@@ -66,6 +66,7 @@ public class Bidder extends Agent {
         
         //read the configuration
         bidderState = AgentUtil.readBidderConfig(configFile, this);
+        System.out.println("At configuration: "+bidderState.getItemsWanted()+" "+bidderState.getBudget());
     }
 
     public Strategy getCurrentStrategy() {

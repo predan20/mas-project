@@ -26,6 +26,8 @@ public class Constants {
 	
 	public static final String CONFIG_BIDDER_PREFIX = "bidder.";
 	public static final String CONFIG_BIDDER_BUDGET = "budget";
+	public static final String CONFIG_BIDDER_ITEMS = "itemsWanted";
+	
 	public static final String CONFIG_BIDDER_STRATEGY = "strategy";
 	
 }
