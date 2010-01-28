@@ -22,7 +22,7 @@ public class ContractorBehaviour extends ContractNetResponder {
         Configuration conf = null;
         try {
             conf = (Configuration) myAgent.getContentManager().extractContent(cfp);
-            System.out.println("Agent " + myAgent.getLocalName()+": CFP received " + conf + ".");
+            System.out.println("Agent " + myAgent.getLocalName()+": CFP received.");
         } catch (UngroundedException e1) {
             throw new RuntimeException(e1);
         } catch (CodecException e1) {
