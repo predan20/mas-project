@@ -1,6 +1,5 @@
 package mas.agent.behaviour;
 
-import mas.onto.Configuration;
 import jade.content.lang.Codec.CodecException;
 import jade.content.onto.OntologyException;
 import jade.content.onto.UngroundedException;
@@ -11,6 +10,9 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
+import mas.onto.Configuration;
+import mas.onto.Task;
+import mas.onto.Tender;
 
 public class ContractorBehaviour extends ContractNetResponder {
 
@@ -19,9 +21,9 @@ public class ContractorBehaviour extends ContractNetResponder {
     }
     
     protected ACLMessage prepareResponse(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
-        Configuration conf = null;
+        Task task = null;
         try {
-            conf = (Configuration) myAgent.getContentManager().extractContent(cfp);
+            task = (Task) myAgent.getContentManager().extractContent(cfp);
             System.out.println("Agent " + myAgent.getLocalName()+": CFP received.");
         } catch (UngroundedException e1) {
             throw new RuntimeException(e1);
@@ -38,7 +40,7 @@ public class ContractorBehaviour extends ContractNetResponder {
             
             Configuration proposal = new Configuration();
             try {
-                myAgent.getContentManager().fillContent(propose, proposal);
+                myAgent.getContentManager().fillContent(propose, new Tender(proposal));
             } catch (CodecException e) {
                 throw new RuntimeException(e);
             } catch (OntologyException e) {

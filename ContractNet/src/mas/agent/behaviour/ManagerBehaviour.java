@@ -7,10 +7,14 @@ import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
+import mas.AgentUtil;
 import mas.onto.Configuration;
+import mas.onto.Task;
 
 public class ManagerBehaviour extends ContractNetInitiator {
 
@@ -18,7 +22,7 @@ public class ManagerBehaviour extends ContractNetInitiator {
         super(a, cfp);
         
         try {
-            myAgent.getContentManager().fillContent(cfp, new Configuration());
+            myAgent.getContentManager().fillContent(cfp,  AgentUtil.readManagerTask());
         } catch (CodecException e) {
             throw new RuntimeException(e);
         } catch (OntologyException e) {
