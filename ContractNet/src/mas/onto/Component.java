@@ -5,7 +5,8 @@ import jade.content.Concept;
 public class Component implements Concept{
     private String manufacturer;
     private String quality;
-    private long price;
+    private int price;
+    private int count;
     
     public String getManufacturer() {
         return manufacturer;
@@ -19,12 +20,30 @@ public class Component implements Concept{
     public void setQuality(String quality) {
         this.quality = quality;
     }
-    public long getPrice() {
+    public int getPrice() {
         return price;
     }
-    public void setPrice(long price) {
+    public void setPrice(int price) {
         this.price = price;
     }
+    public int getCount() {
+        return count;
+    }
+    public void setCount(int availableCount) {
+        this.count = availableCount;
+    }
+    
+    public Component clone(){
+        Component res = new Component();
+        
+        res.setCount(this.getCount());
+        res.setManufacturer(getManufacturer());
+        res.setPrice(getPrice());
+        res.setQuality(getQuality());
+        
+        return res;
+    }
+    
     
     
 }
