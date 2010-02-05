@@ -90,7 +90,7 @@ public class AgentUtil {
                    
                    
                }else if(rest.startsWith(CONFIG_MOTHERBOARD)){
-                   takeOffLength = CONFIG_GRAPHICS.length();
+                   takeOffLength = CONFIG_MOTHERBOARD.length();
                    
                    if(conf.getMotherBoard() == null){
                        conf.setMotherBoard(new Motherboard());
@@ -99,7 +99,7 @@ public class AgentUtil {
                    
                    
                }else if(rest.startsWith(CONFIG_GRAPHICS)){
-                   takeOffLength = CONFIG_MOTHERBOARD.length();
+                   takeOffLength = CONFIG_GRAPHICS.length();
                    
                    if(conf.getGraphicsCard() == null){
                        conf.setGraphicsCard(new GraphicsCard());

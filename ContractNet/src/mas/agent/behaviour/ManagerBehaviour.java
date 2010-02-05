@@ -68,9 +68,8 @@ public class ManagerBehaviour extends ContractNetInitiator {
                     throw new RuntimeException(e1);
                 }
                 
-                if(!validate(tender)){
+                if(!validate(tender, getTask())){
                     msg.setContent("Incomplete tender!");
-                    System.out.println("Rejecting incomplete tender from responder " + msg.getSender().getName());
                     continue;
                 }
                 
@@ -89,8 +88,12 @@ public class ManagerBehaviour extends ContractNetInitiator {
         }
     }
     
-    private boolean validate(Tender tender){
+    private boolean validate(Tender tender, Task task){
         if(tender == null){
+            return false;
+        }
+        
+        if(task.getConfigurations().size() > tender.getSubtenders().size()){
             return false;
         }
         

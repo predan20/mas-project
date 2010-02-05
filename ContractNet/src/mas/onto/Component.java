@@ -34,7 +34,12 @@ public class Component implements Concept{
     }
     
     public Component clone(){
-        Component res = new Component();
+        Component res;
+        try {
+            res = this.getClass().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         
         res.setCount(this.getCount());
         res.setManufacturer(getManufacturer());
