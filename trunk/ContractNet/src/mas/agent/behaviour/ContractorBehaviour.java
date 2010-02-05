@@ -20,6 +20,9 @@ import mas.AgentUtil;
 import mas.onto.Component;
 import mas.onto.ConfigTender;
 import mas.onto.Configuration;
+import mas.onto.GraphicsCard;
+import mas.onto.Motherboard;
+import mas.onto.Processor;
 import mas.onto.Task;
 import mas.onto.Tender;
 
@@ -88,6 +91,13 @@ public class ContractorBehaviour extends ContractNetResponder {
         });
         
         for(Configuration config : task.getConfigurations()){
+            for(Component c : config.getComponents()){
+                if(c !=  null){
+                    c.setCount(config.getRequiredNumber());
+                }
+            }
+            
+            
             List<Component> proposal = new ArrayList<Component>();
             
             for(Component component : inventory){
@@ -107,12 +117,16 @@ public class ContractorBehaviour extends ContractNetResponder {
                 //add something to the proposal only if we matched the requirement
                 if(match != null){
                     match = match.clone();
-                    if(matched != null && component.getCount() > matched.getCount()){
-                        match.setCount(matched.getCount());
+                    int matchedCount = matched == null ? config.getRequiredNumber() : matched.getCount();
+                    if(component.getCount() > matchedCount){
+                        match.setCount(matchedCount);
                         
                         //reduce the available count
-                        component.setCount(component.getCount() - matched.getCount());
-                        matched.setCount(0);
+                        component.setCount(component.getCount() - matchedCount);
+                        
+                        if(matched != null){
+                            matched.setCount(0);
+                        }
                     }else if(component.getCount() != 0){
                         //reduce the available to zero
                         if(matched !=null){
@@ -146,32 +160,52 @@ public class ContractorBehaviour extends ContractNetResponder {
     
     
     private Component matches(Component component, Configuration config){
-        for(Component requiredComponent : config.getComponents()){
+        Component res = null;
+        Component com = config.getProcessor();
+       
+        if(matches(component, com = config.getProcessor(), Processor.class)
+                || matches(component, com = config.getMotherBoard(), Motherboard.class)
+                || matches(component, com = config.getGraphicsCard(), GraphicsCard.class)){
             
-            //if not specified in the task we immediately match
-            if(requiredComponent == null){
-                return component;
+            if(com == null){
+                res = component;
+            }else{
+                res = com;
             }
-            
-            if(component.getClass().equals(requiredComponent.getClass())){
-                continue;
-            }
-        
-            boolean priceMatches = requiredComponent.getPrice() == 0
-                    || requiredComponent.getPrice() >= component.getPrice();
-            boolean manufacturerMatches = requiredComponent.getManufacturer() == null
-                    || requiredComponent.getManufacturer().length() == 0
-                    || requiredComponent.getManufacturer().equals(component.getManufacturer());
-            boolean qualityMatches = requiredComponent.getQuality() == null || requiredComponent.getQuality().length() == 0
-                    || requiredComponent.getQuality().equals(component.getQuality());
-            
-            //match
-            if(priceMatches && manufacturerMatches && qualityMatches){
-                return requiredComponent;
-            }
-        
         }
-        return null;
+        
+        return res;
+    }
+    
+    private boolean matches(Component component, Component requiredComponent, Class<? extends Component> requiredType){
+
+        // if not specified in the task we immediately match
+        if (requiredComponent == null) {
+            return component.getClass().equals(requiredType);
+        }
+
+        if (requiredComponent.getCount() == 0) {
+            return false;
+        }
+
+        if (!component.getClass().equals(requiredComponent.getClass())) {
+            return false;
+        }
+
+        boolean priceMatches = requiredComponent.getPrice() == 0
+                || requiredComponent.getPrice() >= component.getPrice();
+        boolean manufacturerMatches = requiredComponent.getManufacturer() == null
+                || requiredComponent.getManufacturer().length() == 0
+                || requiredComponent.getManufacturer().equals(component.getManufacturer());
+        boolean qualityMatches = requiredComponent.getQuality() == null || requiredComponent.getQuality().length() == 0
+                || requiredComponent.getQuality().equals(component.getQuality());
+
+        // match
+        if (priceMatches && manufacturerMatches && qualityMatches) {
+            return true;
+        }
+
+        return false;
     }
 
 }

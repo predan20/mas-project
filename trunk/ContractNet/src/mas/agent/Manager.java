@@ -15,11 +15,11 @@ public class Manager extends Agent {
     public static final long RESPOND_TIMEOUT = 5000;
     @Override
     protected void setup() {
-        try {
-            Thread.currentThread().sleep(20000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.currentThread().sleep(20000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         
         Object[] args = getArguments();
         if (args != null && args.length > 0) {
