@@ -1,0 +1,14 @@
+/* Jason Project */
+
+MAS electronicMarket {
+
+    infrastructure: Centralised
+
+    agents: seller #1;
+
+        buyer #1;
+
+        matchmaker;
+
+}
+
