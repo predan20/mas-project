@@ -6,9 +6,8 @@ MAS electronicMarket {
 
     agents: seller #1;
 
-        buyer #1;
+        buyer #2;
 
         matchmaker;
-
 }
 
