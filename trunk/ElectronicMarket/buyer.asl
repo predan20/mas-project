@@ -11,7 +11,7 @@
 //initializes the agents' beliefs with items to be requsted on the market.
 //each item is identified by name and price. if the price is 0 then it is considered as not specified.
 //for each request it is specified if the agent should search for an offer or wait for a seller to approach him
-+!init : .my_name(buyer1) <- +request(dvd, 100, wait);
++!init : .my_name(buyer1) <- +request(dvd, 50, search);
 							 +request(camera, 50, wait).
 +!init : .my_name(buyer2) <- +request(dvd, 0, search);
 							 +request(camera, 50, wait).							 
