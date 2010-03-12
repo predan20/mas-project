@@ -4,7 +4,7 @@ MAS electronicMarket {
 
     infrastructure: Centralised
 
-    agents: seller #1;
+    agents: seller #2;
 
         buyer #2;
 
