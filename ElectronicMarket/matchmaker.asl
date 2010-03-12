@@ -29,19 +29,15 @@ thereAreCheaper(item (Name, Price, Type, Agent)):- item (Name, Price, Type, Agen
 		.print("Match with item ", Name," and price ",Price," from ", B, " for ", A).
 //search plan when there is no price specified. matches the lowest possible price
 +search(offer, Name, 0)[source(A)] : cheapest(item (Name, Price, offer, B)) 
-	<- .send(A, tell, search_result(item(Name, Price, offer, B),request(Name, 0))); 
-		-search(offer, Name, 0)[source(A)];
-		.print("Match with item ", Name," and price ",Price," from ", B, " for ", A);.
-+search(request, Name, 0)[source(A)] : item (Name, Price, request, B) 
-	<- .send(A, tell, search_result(item(Name, Price, request, B),request(Name, 0))); 
-		-search(request, Name, 0)[source(A)];
-		.print("Match with item ", Name," and price ",Price," from ", B, " for ", A);.
+	<- .print("Match with item ", Name," and price ",Price," from ", B, " for ", A);
+		.send(A, tell, search_result(item(Name, Price, offer, B),request(Name, 0))); 
+		-search(offer, Name, 0)[source(A)].
 //search failure.
 +search(Type, Name, Price)[source(A)] 
 	: ((Price > 0) & (not item(Name, Price, Type, B))) | ((Price=0) & (not item(Name, _, Type, B)))
 	<-  .send(A, tell, empty_search(Name, Price)); 
 		-search(Type, Name, Price)[source(A)];
-		.print("Search empty");.
+		.print("Search empty").
 
 //update beliefs in case item is sold
 +remove_offer(Name, Price)[source(A)] : item(Name, Price, offer, A)

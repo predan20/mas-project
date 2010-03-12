@@ -7,21 +7,56 @@
 !init.
 
 /* Plans */
+//initializes the agents' beliefs with items to be offered on the market.
+//each item is identified by name and price.
+//for each offer it is specified if the agent should search for a request or wait for a buyer to approach him
++!init : .my_name(seller1)  <- +offer(dvd, 100, wait);
+								+offer(camera, 50, search).
++!init : .my_name(seller2)  <- +offer(dvd, 150, search);
+								+offer (dvd, 70, search);
+							   +offer(camera, 10, wait).				
 
-+!init : .my_name(seller1)  <- +offer(dvd, 100);
-								+offer(dvd, 50).
-+!init : .my_name(seller2)  <- +offer(dvd, 150);
-								+offer (dvd, 70);
-							   +offer(camera, 10).							   
-+offer(Name, Price) : true <- .send(matchmaker, tell, offer(Name, Price)).
+//sends message to the matchmaker that an item is requested when a request is added to the belief base.
++offer(Name, Price, search) : true <- .send(matchmaker, tell, offer(Name, Price));!search(Name, Price).
++offer(Name, Price, wait) : true <- .send(matchmaker, tell, offer(Name, Price)).
 
-+proposal(Name, Price)[source(Buyer)] : offer(Name, Price) 
-	<-  -offer(Name, Price);
+//plan for executing a search goal by sending search request to the matchmaker
++!search(Name, Price) : true <- .send(matchmaker, tell, search(request, Name, Price)).
+//handle search results
++search_result(item(Name, Price, request, Buyer), request(OriginName, OriginPrice))[source(matchmaker)] : true 
+	<- .print ("Item found");
+		+negotiate(item(Name, Price, request, Buyer), request(OriginName, OriginPrice));
+		-search_result(item(Name, Price, request, Buyer), request(OriginName, OriginPrice))[source(matchmaker)].
++empty_search(Name, Price)[source(matchmaker)] : not offer(Name, Price, search)
+	<- .print("No matching item found!");
+		-empty_search(Name, Price)[source(matchmaker)].
++empty_search(Name, Price)[source(matchmaker)] : offer(Name, Price, search) 
+	<- .print("No matching item found!");
+		-empty_search(Name, Price)[source(matchmaker)];
+		!search(Name, Price).
+
+
+//negotiation rules
++negotiate(item(Name, Price, request, Buyer), request(OriginName, OriginPrice)) : true 
+	<- .print("Sending proposal. Name ", Name, " price ", Price);
+		.send(Buyer, tell, proposal(Name, Price)).
++accept(Name,Price)[source(Buyer)] : negotiate(item(Name, Price, request, Buyer), request(OriginName, OriginPrice))
+	<- -negotiate(item(Name, Price, request, Buyer), request(OriginName, OriginPrice));
+		-offer(Name, OriginPrice, _);
+		.send(matchmaker, tell, remove_offer(Name, OriginPrice)).
++reject(Name,Price)[source(Buyer)] : negotiate(item(Name, Price, request, Buyer), request(OriginName, OriginPrice))
+	<- -negotiate(item(Name, Price, request, Buyer), request(OriginName, OriginPrice));
+		.print("Proposal Name ", Name, " price ", Price, " rejected!");
+		-reject(Name,Price)[source(Buyer)];
+		!search(Name, OriginPrice).
+
++proposal(Name, Price)[source(Buyer)] : offer(Name, Price, _) 
+	<-  -offer(Name, Price, _);
 		.send(Buyer, tell, accept(Name,Price));
 		.print("Item with ", Name," and price ",Price, " sold to ", Buyer, "!");
 		-proposal(Name, Price)[source(Buyer)];
 		.send(matchmaker, tell, remove_offer(Name, Price)).
-+proposal(Name, Price)[source(Buyer)] : not offer(Name, Price) 
++proposal(Name, Price)[source(Buyer)] : not offer(Name, Price, _) 
 	<-  -proposal(Name, Price)[source(Buyer)];
 		.send(Buyer, tell, reject(Name,Price)).
 
