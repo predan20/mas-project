@@ -17,10 +17,12 @@ thereAreCheaper(item (Name, Price, Type, Agent)):- item (Name, Price, Type, Agen
 //handle messages for registering requested and offered items
 +offer(Name, Price)[source(A)] :  true 
 	<-  +item(Name, Price, offer, A);
-		.print("Item ", Name, " offered by ", A, ".").
+		.print("Item ", Name, " offered by ", A, ".");
+		.broadcast(tell, offer_added(Name, Price)).
 +requested(Name, Price)[source(A)] : true 
 	<-  +item(Name, Price, request, A);
-		.print("Item ", Name, " requested.").
+		.print("Item ", Name, " requested.");
+		.broadcast(tell, request_added(Name, Price)).
 
 //search plan when there is complete match (both name and price) 
 +search(Type, Name, Price)[source(A)] : item(Name, Price, Type, B) 

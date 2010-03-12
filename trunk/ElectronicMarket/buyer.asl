@@ -17,8 +17,7 @@
 							 +request(camera, 50, wait).							 
 
 //sends message to the matchmaker that an item is requested when a request is added to the belief base.
-+request(Name, Price, search) : true <- .send(matchmaker, tell, requested(Name, Price));!search(Name, Price).
-+request(Name, Price, wait) : true <- .send(matchmaker, tell, requested(Name, Price)).
++request(Name, Price, _) : true <- .send(matchmaker, tell, requested(Name, Price)).
 
 //plan for executing a search goal by sending search request to the matchmaker
 +!search(Name, Price) : true <- .send(matchmaker, tell, search(offer, Name, Price)).
@@ -27,13 +26,14 @@
 	<- .print ("Item found");
 		+negotiate(item(Name, Price, offer, Seller), request(OriginName, OriginPrice));
 		-search_result(item(Name, Price, offer, Seller), request(OriginName, OriginPrice))[source(matchmaker)].
-+empty_search(Name, Price)[source(matchmaker)] : not request(Name, Price, search) 
++empty_search(Name, Price)[source(matchmaker)] : true 
 	<- .print("No matching item found!");
 		-empty_search(Name, Price)[source(matchmaker)].
-+empty_search(Name, Price)[source(matchmaker)] : request(Name, Price, search) 
-	<- .print("No matching item found!");
-		-empty_search(Name, Price)[source(matchmaker)];
-		!search(Name, Price).
+//search again only if there is new offer added		
++offer_added(Name, Price)[source(matchmaker)] 
+	: request(Name, OriginPrice, search)
+	<-  -offer_added(Name, Price)[source(matchmaker)];
+		!search(Name, OriginPrice).
 
 //negotiation rules
 +negotiate(item(Name, Price, offer, Seller), request(OriginName, OriginPrice)) : true 
@@ -46,16 +46,15 @@
 +reject(Name,Price)[source(Seller)] : negotiate(item(Name, Price, offer, Seller), request(OriginName, OriginPrice))
 	<- -negotiate(item(Name, Price, offer, Seller), request(OriginName, OriginPrice));
 		.print("Proposal Name ", Name, " price ", Price, " rejected!");
-		-reject(Name,Price)[source(Seller)];
-		!search(Name, OriginPrice).
+		-reject(Name,Price)[source(Seller)].
 		
 +proposal(Name, Price)[source(Seller)] : request(Name, OriginPrice, _) & (OriginPrice = Price | OriginPrice = 0)  
 	<-  -request(Name, OriginPrice, _);
-		.send(Seller, tell, accept(Name,Price));
-		.print("Item with ", Name," and price ",Price, " bought from ", Seller, "!");
 		-proposal(Name, Price)[source(Seller)];
+		.send(Seller, tell, accept(Name,Price));
+		.print("Item ", Name," and price ",Price, " bought from ", Seller, "!");
 		.send(matchmaker, tell, remove_offer(Name, OriginPrice)).
 +proposal(Name, Price)[source(Seller)] : not (request(Name, OriginPrice, _) & (OriginPrice = Price | OriginPrice = 0)) 
 	<-  -proposal(Name, Price)[source(Seller)];
-		.send(Buyer, tell, reject(Name,Price)).
+		.send(Seller, tell, reject(Name,Price)).
 
