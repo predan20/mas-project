@@ -1,0 +1,11 @@
+BeliefUpdates:
+	{offer(Name, Price, SearchWait, notsent)} OfferSent(Name, Price) {not offer(Name, Price, SearchWait, notsent) , offer(Name, Price, SearchWait, sent)}
+
+Beliefs:
+	count(0).
+
+Goals:
+	send_offers
+
+PG-rules:
+	send_offers <- true | while(B(offer(Name, Price, SearchWait, notsent))) do {send(matchmaker, inform, offer(Name, Price)); OfferSent(Name, Price)}

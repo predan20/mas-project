@@ -1,0 +1,24 @@
+BeliefUpdates:
+	{true} InsertItem(Name, Price, Type, Agent) {item(Name, Price, Type, Agent)}
+
+Beliefs:
+	cheapest(item(Name, Price, Type, Agent)):-item(Name, Price, Type, Agent), not thereAreCheaper(item(Name, Price, Type, Agent)).
+	thereAreCheaper(item(Name, Price, Type, Agent)):-item(Name, Price, Type, Agent), item(Name, Price2, Type, _), Price > Price2.
+
+Goals:
+	start
+
+PG-rules:
+	start <- true |
+		print("Electronic Market open!");
+		dropgoal(start)
+		
+PC-rules:
+	message(A, inform, _, _,offer(Name, Price)) <- true | 
+	  	InsertItem(Name, Price, offer, A);
+		print("Item ");print(Name);print(" offered by ");print(A);
+		send(buyer, inform, offer_added(Name, Price)) /*TODO: send to all buyers*/
+	message(A, inform, _, _, requested(Name, Price)) <- true | 
+		 InsertItem(Name, Price, request, A);
+		print("Item ");print(Name);print(" requested by ");print(A);
+		send(seller, inform, request_added(Name, Price)) /*TODO: send to all sellers*/
