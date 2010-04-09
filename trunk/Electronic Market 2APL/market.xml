@@ -2,6 +2,7 @@
   <agent name="matchmaker" file="matchmaker.2apl"/>
   <agent name="seller1" file="seller1.2apl"/>
   <agent name="seller2" file="seller2.2apl"/>
-  <agent name="buyer" file="buyer.2apl"/>
+  <agent name="buyer1" file="buyer1.2apl"/>
+  <agent name="buyer2" file="buyer2.2apl"/>
 </apaplmas>
 

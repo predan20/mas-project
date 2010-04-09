@@ -1,11 +1,46 @@
 BeliefUpdates:
 	{offer(Name, Price, SearchWait, notsent)} OfferSent(Name, Price) {not offer(Name, Price, SearchWait, notsent) , offer(Name, Price, SearchWait, sent)}
-
-Beliefs:
-	count(0).
+	{true} 									OffersSent() { send_offers }
+	{offer(Name, Price, SearchWait, X)} RemoveOffer(Name, Price) {not offer(Name, Price, SearchWait, X)}
 
 Goals:
 	send_offers
 
 PG-rules:
-	send_offers <- true | while(B(offer(Name, Price, SearchWait, notsent))) do {send(matchmaker, inform, offer(Name, Price)); OfferSent(Name, Price)}
+	send_offers <- true | 
+		while B(offer(Name, Price, SearchWait, notsent)) do {send(matchmaker, inform, offer(Name, Price)); 
+		OfferSent(Name, Price)};
+		OffersSent()
+	search(Name, Price) <- true | 
+		send(matchmaker, request, search(request, Name, Price));
+		dropgoal(search(Name, Price))
+	negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice)) <- true | 
+		send(Buyer, inform, proposal(Name, Price))
+	
+PC-rules:
+	//search only if there is new request added		
+	message(A, inform, _, _, request_added(Name, Price)) <- offer(Name, OriginPrice, search, _) |
+		adopta(search(Name, OriginPrice))
+		
+	//handle search results
+	message(A, inform, _, _, search_result(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice))) <- true | 
+		adopta(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice)))
+		
+	//negotiation rules	
+	message(Buyer, inform, _, _, accept(Name,Price)) <- true | 
+		if G(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice))) then {
+			dropgoal(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice)));
+			RemoveOffer(Name, OriginPrice);
+			send(matchmaker, inform, remove_offer(Name, OriginPrice))
+		}
+	message(Buyer, inform, _, _, reject(Name,Price)) <- true |
+		if G(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice))) then {
+			dropgoal(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice)))
+		}
+	
+	message(Buyer, inform, _, _, proposal(Name,Price)) <- offer(Name, Price, _, _) |
+		RemoveOffer(Name, Price);
+		send(Buyer, inform, accept(Name,Price));
+		send(matchmaker, request, remove_offer(Name, Price))
+	message(Buyer, inform, _, _, proposal(Name,Price)) <- not offer(Name, Price, _, _) |
+		send(Buyer, inform, reject(Name,Price))

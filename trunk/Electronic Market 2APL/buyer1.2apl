@@ -1,0 +1,6 @@
+Include:
+	buyer.2apl
+
+Beliefs:
+	request(dvd, 70, search, notsent).
+	request(camera, 50, wait, notsent).
