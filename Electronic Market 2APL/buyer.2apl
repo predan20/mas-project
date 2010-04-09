@@ -1,14 +1,42 @@
-/*
- * This is an example model for a new 2APL project
- */
 BeliefUpdates:
-	{true} DoPushup(S, X) { not count(S), count(S+X) }
-Beliefs:
-	count(0).
+	{request(Name, Price, SearchWait, notsent)} RequestSent(Name, Price) {not request(Name, Price, SearchWait, notsent) , request(Name, Price, SearchWait, sent)}
+	{true} RequestsSent() { send_requests }
+	{true} Negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice)) {negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice))}
+	{request(Name, Price, SearchWait, X)} RemoveRequest(Name, Price) {not request(Name, Price, SearchWait, X)}
+	
+
 Goals:
-	pushup(10)
+	send_requests
+
 PG-rules:
-	pushup(T) <- not count(T) | {name();
-		[B(count(R));
-		DoPushup(R, 1)]
-	}
+	send_requests <- true | while B(request(Name, Price, SearchWait, notsent)) do {send(matchmaker, inform, request(Name, Price)); RequestSent(Name, Price)};RequestsSent()
+	search(Name, Price) <- true | send(matchmaker, request, search(offer, Name, Price));dropgoal(search(Name, Price))
+
+PC-rules:
+	//search only if there is new offer added		
+	message(A, inform, _, _, offer_added(Name, Price)) <- request(Name, OriginPrice, search, _) |
+		adopta(search(Name, OriginPrice))
+		
+	//handle search results
+	message(A, inform, _, _, search_result(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice))) <- true | 
+		Negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice))
+		
+	//negotiation rules	
+	message(Seller, inform, _, _, accept(Name,Price)) <- true | 
+		if G(negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice))) then {
+			dropgoal(negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice)));
+			RemoveRequest(Name, OriginPrice);
+			send(matchmaker, inform, remove_request(Name, OriginPrice))
+		}
+	message(Seller, inform, _, _, reject(Name,Price)) <- true |
+		if G(negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice))) then {
+			dropgoal(negotiate(item(Name, Price, offer, Seller), search_request(OriginName, OriginPrice)))
+		}
+	
+	message(Seller, inform, _, _, proposal(Name,Price)) <- request(Name, Price, _, _) |
+		RemoveRequest(Name, Price);
+		send(Seller, inform, accept(Name,Price));
+		send(matchmaker, request, remove_request(Name, Price))
+		message(Seller, inform, _, _, proposal(Name,Price)) <- not request(Name, Price, _, _) |
+		send(Seller, inform, reject(Name,Price))
+	

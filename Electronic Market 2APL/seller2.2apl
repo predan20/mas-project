@@ -2,5 +2,5 @@ Include:
 	seller.2apl
 Beliefs:
 	offer(dvd, 150, search, notsent).
-	offer (dvd, 70, search, notsent).
+	offer(dvd, 70, search, notsent).
 	offer(camera, 10, wait, notsent).
