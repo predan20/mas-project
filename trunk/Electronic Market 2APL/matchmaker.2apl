@@ -44,4 +44,7 @@ PC-rules:
 	message(A, request,_, _, remove_offer(Name, Price)) <- item(Name, Price, offer, A) |
 		RemoveItem(Name, Price, offer, A)
 	message(A, request,_, _, remove_request(Name, Price)) <- item(Name, Price, request, A) |
-		RemoveItem(Name, Price, request, A)
+		@marketplace( buy(A, Price), R );
+	    if B(R = [returnValue(X)] and (X < 0)) 
+			then {print("No can't buy!")} 
+			else {RemoveItem(Name, Price, request, A)}
