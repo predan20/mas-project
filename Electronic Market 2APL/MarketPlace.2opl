@@ -1,0 +1,34 @@
+Facts:
+budget(buyer1,10).
+budget(buyer2,10).
+
+inTheRed(A) :- budget(A,B), B < 0. 
+
+Effects:
+
+{ budget(A,B), not blacklisted(A) }
+	buy(MM,A,P)
+{ not budget(A,B), budget(A,B-P), return(B-P) }
+
+{ budget(A,B), blacklisted(A) }
+	buy(A,P)
+{ return(B) }
+
+
+
+
+{ true }
+	item(MM, A, Name)
+{ item(A, Name)}
+
+
+
+
+Counts-as rules:
+       
+inTheRed(A) => viol_budget(A).
+
+Sanction rules:
+
+viol_budget(A) => not viol_budget(A) and blacklisted(A).
+
