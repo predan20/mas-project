@@ -20,7 +20,7 @@ Effects:
 
 
 //registration of an item
-{ }
+{ not item(A, Name, Price, Type)}
 	insertitem(MM, A, Name, Price, Type)
 { item(A, Name, Price, Type)}
 
@@ -35,7 +35,7 @@ Effects:
 { not item(A, Name, Price, Type) }
 
 //if an agent wants to remove an item which is not there
-{ not item(A, Name, Price, Type) }
+{ not item(A, Name, Price, Type) } //<- bug here
 	removeitem(MM, A, Name, Price, Type)
 { removalproblem(A, Name, Price, Type) }
 

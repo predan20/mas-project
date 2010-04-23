@@ -23,15 +23,15 @@ PC-rules:
 		send(buyer2, inform, offer_added(Name, Price)) /*TODO: send to all buyers without knowing their names*/
 	message(A, inform, _, _, request(Name, Price)) <- true | 
 		 InsertItem(Name, Price, request, A);
-		 //@marketplace (item (A, Name, Price, request),R);
+		 @marketplace (insertitem (A, Name, Price, request),R); //bug here? when adding this line, there is matching only for the first buyer and seller
 		send(seller1, inform, request_added(Name, Price));
 		send(seller2, inform, request_added(Name, Price)) /*TODO: send to all sellers without knowing their names*/
 		
 	
 	// search plan when there is complete match (both name and price) 
 	message(A, request, _, _, search(Type, Name, Price)) <- item(Name, Price, Type, B) | 
-	    send(A, inform, search_result(item(Name, Price, Type, B), search_request(Name, Price)))//;
-	  //  @marketplace (search (A, Name, Price, Type),R)
+	    send(A, inform, search_result(item(Name, Price, Type, B), search_request(Name, Price)));
+	    @marketplace (search (A, Name, Price, Type),R)
 	 
 	     
 		
