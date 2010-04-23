@@ -31,7 +31,7 @@ PC-rules:
 		if G(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice))) then {
 			dropgoal(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice)));
 			RemoveOffer(Name, OriginPrice);
-			send(matchmaker, inform, remove_offer(Name, OriginPrice))
+			send(matchmaker, request, remove_offer(Name, OriginPrice))
 		}
 	message(Buyer, inform, _, _, reject(Name,Price)) <- true |
 		if G(negotiate(item(Name, Price, request, Buyer), search_request(OriginName, OriginPrice))) then {
