@@ -1,11 +1,15 @@
 Facts:
 budget(buyer1,10).
-budget(buyer2,10).
+budget(buyer2,1000).
 
 inTheRed(A) :- budget(A,B), B < 0. 
+searchproblem (A) :- item(A, Name, Price, Type), search(A, Name, Price, Type) . 
+//one should not search to buy an item that he wants to sell or to sell an item that he wants to buy
+//he should not search for the same item with the same type (request or offer)
 
 Effects:
 
+//budget issues when a buyer wants to buy
 { budget(A,B), not blacklisted(A) }
 	buy(MM,A,P)
 { not budget(A,B), budget(A,B-P), return(B-P) }
@@ -15,20 +19,35 @@ Effects:
 { return(B) }
 
 
+//registration of an item
+{ }
+	insertitem(MM, A, Name, Price, Type)
+{ item(A, Name, Price, Type)}
 
+//search for an item
+{ }
+	search(MM, A, Name, Price, Type)
+{ search(A, Name, Price, Type) }
 
-{ true }
-	item(MM, A, Name)
-{ item(A, Name)}
+//removal of an item
+{ item(A, Name, Price, Type) }
+	removeitem(MM, A, Name, Price, Type)
+{ not item(A, Name, Price, Type) }
 
-
-
+//if an agent wants to remove an item which is not there
+{ not item(A, Name, Price, Type) }
+	removeitem(MM, A, Name, Price, Type)
+{ removalproblem(A, Name, Price, Type) }
 
 Counts-as rules:
        
 inTheRed(A) => viol_budget(A).
+searchproblem(A) => viol_search(A) .
+removalproblem(A, Name, Type) => viol_removal(A) .
 
 Sanction rules:
 
 viol_budget(A) => not viol_budget(A) and blacklisted(A).
+viol_search(A) => not viol_search(A) and greylisted(A) . 
+viol_removal(A) => not viol_removal(A) and whitelisted(A) .
 

@@ -18,33 +18,46 @@ PC-rules:
 	//handle messages for registering requested and offered items
 	message(A, inform, _, _,offer(Name, Price)) <- true | 
 	  	InsertItem(Name, Price, offer, A);
+	  	@marketplace (insertitem (A, Name, Price, offer),R);
 		send(buyer1, inform, offer_added(Name, Price));
 		send(buyer2, inform, offer_added(Name, Price)) /*TODO: send to all buyers without knowing their names*/
 	message(A, inform, _, _, request(Name, Price)) <- true | 
 		 InsertItem(Name, Price, request, A);
+		 //@marketplace (item (A, Name, Price, request),R);
 		send(seller1, inform, request_added(Name, Price));
 		send(seller2, inform, request_added(Name, Price)) /*TODO: send to all sellers without knowing their names*/
 		
 	
 	// search plan when there is complete match (both name and price) 
 	message(A, request, _, _, search(Type, Name, Price)) <- item(Name, Price, Type, B) | 
-	    send(A, inform, search_result(item(Name, Price, Type, B), search_request(Name, Price))) 
+	    send(A, inform, search_result(item(Name, Price, Type, B), search_request(Name, Price)))//;
+	  //  @marketplace (search (A, Name, Price, Type),R)
+	 
+	     
 		
 	//search plan when there is no price specified. matches the lowest possible price
 	message(A, request, _, _, search(offer, Name, 0)) <- cheapest(item (Name, Price, offer, B)) |
-		send(A, inform, search_result(item(Name, Price, offer, B),search_request(Name, 0)))
+			send(A, inform, search_result(item(Name, Price, offer, B),search_request(Name, 0)));
+			@marketplace (search (A, Name, Price, offer),R)
+		
 		
 	//search failure.
 	message(A, request, _, _, search(Type, Name, Price)) 
 	<- ((Price > 0) and (not item(Name, Price, Type, B))) or ((Price=0) and (not item(Name, _, Type, B))) |
-		send(A, inform, empty_search(Name, Price))
+			send(A, inform, empty_search(Name, Price));
+			@marketplace (search (A, Name, Price, Type),R)
 		
 		
 	//update beliefs in case item is sold
 	message(A, request,_, _, remove_offer(Name, Price)) <- item(Name, Price, offer, A) |
-		RemoveItem(Name, Price, offer, A)
+			RemoveItem(Name, Price, offer, A);
+			@marketplace (removeitem(A, Name, Price, offer),R)
+			
 	message(A, request,_, _, remove_request(Name, Price)) <- item(Name, Price, request, A) |
 		@marketplace( buy(A, Price), R );
 	    if B(R = [returnValue(X)] and (X < 0)) 
 			then {print("No can't buy!")} 
-			else {RemoveItem(Name, Price, request, A)}
+			else {print("Can buy!");
+					RemoveItem(Name, Price, request, A);
+					@marketplace (removeitem(A, Name, Price, request),R)
+					}
